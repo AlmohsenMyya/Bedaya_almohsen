@@ -25,10 +25,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get menuOnlineUsers => 'Usuarios en línea';
 
   @override
-  String get menuNewestUsers => 'Usuarios más nuevos';
+  String get menuNewestUsers => 'Usuarios más recientes';
 
   @override
   String get menuNearestUsers => 'Usuarios más cercanos';
+
   @override
   String get menuCreditWallet => 'Cartera de crédito';
 

@@ -28,7 +28,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get menuNewestUsers => 'புதிய பயனர்கள்';
 
   @override
-  String get menuNearestUsers => 'எதிரிய பயனர்கள்';
+  String get menuNearestUsers => 'அகலமான பயனர்கள்';
 
   @override
   String get menuCreditWallet => 'கிரெடிட் வாலெட்';

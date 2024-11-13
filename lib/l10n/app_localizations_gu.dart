@@ -21,15 +21,14 @@ class AppLocalizationsGu extends AppLocalizations {
   @override
   String get menuRandomUsers => 'રેન્ડમ વપરાશકર્તાઓ';
 
-
   @override
   String get menuOnlineUsers => 'ઓનલાઇન વપરાશકર્તાઓ';
 
   @override
-  String get menuNewestUsers => 'નવિનતમ વપરાશકર્તાઓ';
+  String get menuNewestUsers => 'નવીનતમ વપરાશકર્તાઓ';
 
   @override
-  String get menuNearestUsers => 'નજીકના વપરાશકર્તાઓ';
+  String get menuNearestUsers => 'નિકટમ વપરાશકર્તાઓ';
 
   @override
   String get menuCreditWallet => 'ક્રેડિટ વોલેટ';

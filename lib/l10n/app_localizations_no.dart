@@ -21,7 +21,6 @@ class AppLocalizationsNo extends AppLocalizations {
   @override
   String get menuRandomUsers => 'Tilfeldige brukere';
 
-
   @override
   String get menuOnlineUsers => 'Online brukere';
 

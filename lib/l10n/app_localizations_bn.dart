@@ -22,13 +22,13 @@ class AppLocalizationsBn extends AppLocalizations {
   String get menuRandomUsers => 'যদি ব্যবহারকারী';
 
   @override
-  String get menuOnlineUsers => 'অনলাইন ব্যবহারকারীরা';
+  String get menuOnlineUsers => 'অনলাইন ব্যবহারকারী';
 
   @override
-  String get menuNewestUsers => 'নতুন ব্যবহারকারীরা';
+  String get menuNewestUsers => 'সর্বশেষ ব্যবহারকারী';
 
   @override
-  String get menuNearestUsers => 'নিকটতম ব্যবহারকারীরা';
+  String get menuNearestUsers => 'নিকটতম ব্যবহারকারী';
 
   @override
   String get menuCreditWallet => 'ক্রেডিট ওয়ালেট';

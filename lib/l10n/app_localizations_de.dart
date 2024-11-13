@@ -28,7 +28,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get menuNewestUsers => 'Neueste Benutzer';
 
   @override
-  String get menuNearestUsers => 'Benutzer in der Nähe';
+  String get menuNearestUsers => 'Nächste Benutzer';
+
   @override
   String get menuCreditWallet => 'Guthaben Geldbörse';
 

@@ -21,9 +21,8 @@ class AppLocalizationsSv extends AppLocalizations {
   @override
   String get menuRandomUsers => 'Slumpmässiga användare';
 
-
   @override
-  String get menuOnlineUsers => 'Online användare';
+  String get menuOnlineUsers => 'Online-användare';
 
   @override
   String get menuNewestUsers => 'Nyaste användare';

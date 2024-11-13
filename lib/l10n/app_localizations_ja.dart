@@ -21,12 +21,11 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String get menuRandomUsers => 'ランダムユーザー';
 
-
   @override
   String get menuOnlineUsers => 'オンラインユーザー';
 
   @override
-  String get menuNewestUsers => '新着ユーザー';
+  String get menuNewestUsers => '最新ユーザー';
 
   @override
   String get menuNearestUsers => '近くのユーザー';

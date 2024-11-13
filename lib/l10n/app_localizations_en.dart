@@ -29,6 +29,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get menuNearestUsers => 'Nearest Users';
+
   @override
   String get menuCreditWallet => 'Credit Wallet';
 

@@ -21,7 +21,6 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get menuRandomUsers => 'यादृच्छिक उपयोगकर्ता';
 
-
   @override
   String get menuOnlineUsers => 'ऑनलाइन उपयोगकर्ता';
 

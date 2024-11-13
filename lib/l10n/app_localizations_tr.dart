@@ -21,7 +21,6 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get menuRandomUsers => 'Rastgele Kullanıcılar';
 
-
   @override
   String get menuOnlineUsers => 'Çevrimiçi Kullanıcılar';
 

@@ -21,7 +21,6 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get menuRandomUsers => 'Utenti casuali';
 
-
   @override
   String get menuOnlineUsers => 'Utenti online';
 
