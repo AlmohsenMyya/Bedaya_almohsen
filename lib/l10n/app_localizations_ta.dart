@@ -22,6 +22,15 @@ class AppLocalizationsTa extends AppLocalizations {
   String get menuRandomUsers => 'சீரற்ற பயனர்கள்';
 
   @override
+  String get menuOnlineUsers => 'ஆன்லைன் பயனர்கள்';
+
+  @override
+  String get menuNewestUsers => 'புதிய பயனர்கள்';
+
+  @override
+  String get menuNearestUsers => 'எதிரிய பயனர்கள்';
+
+  @override
   String get menuCreditWallet => 'கிரெடிட் வாலெட்';
 
   @override

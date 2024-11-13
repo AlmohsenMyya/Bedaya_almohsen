@@ -610,6 +610,16 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                                           .toString())!, // ضع النسبة هنا (0-100)
                                   // حجم الدائرة
                                 ),
+                              if (!isOwnProfile)
+                                ProfileMatchingCircle(
+                                  completionPercentage: double.tryParse(
+                                      getItemValue(
+                                          data, 'data.matchingPercentage')
+                                          .toString())!,
+                                  size: 40, // ضع النسبة هنا (0-100)
+                                  // حجم الدائرة
+                                ),
+
                               if (isOwnProfile)
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1137,3 +1147,137 @@ class ProfileCompletionBar extends StatelessWidget {
     );
   }
 }
+
+
+class ProfileMatchingCircle extends StatelessWidget {
+  final double completionPercentage; // نسبة اكتمال البروفايل (0-100)
+  final double size; // حجم الدائرة
+
+  const ProfileMatchingCircle({
+    Key? key,
+    required this.completionPercentage,
+    required this.size,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: GestureDetector(
+        onTap: () {
+          // عند النقر على الدائرة، نعرض مربع الحوار
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                backgroundColor: Colors.white,
+                contentPadding: EdgeInsets.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                content: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          // الدائرة الخارجية كنسبة الاكتمال
+                          SizedBox(
+                            height: size,
+                            width: size,
+                            child: CircularProgressIndicator(
+                              value: completionPercentage / 100,
+                              strokeWidth: size * 0.1, // حجم الخط يتناسب مع حجم الدائرة
+                              backgroundColor: Colors.grey[300],
+                              valueColor:
+                              const AlwaysStoppedAnimation<Color>(Colors.red),
+                            ),
+                          ),
+                          // النسبة المئوية في منتصف الدائرة
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                '${completionPercentage.toInt()}',
+                                style: TextStyle(
+                                  fontSize: size * 0.25, // حجم الخط يتناسب مع حجم الدائرة
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                ),
+                              ),
+                              Text(
+                                '%',
+                                style: TextStyle(
+                                  fontSize: size * 0.15, // حجم الخط يتناسب مع حجم الدائرة
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        'This is your match percentage with this profile.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+        child: Column(
+          children: [
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                // الدائرة الخارجية كنسبة الاكتمال
+                SizedBox(
+                  height: size,
+                  width: size,
+                  child: CircularProgressIndicator(
+                    value: completionPercentage / 100,
+                    strokeWidth: size * 0.1, // حجم الخط يتناسب مع حجم الدائرة
+                    backgroundColor: Colors.grey[300],
+                    valueColor: const AlwaysStoppedAnimation<Color>(Colors.red),
+                  ),
+                ),
+                // النسبة المئوية في منتصف الدائرة
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${completionPercentage.toInt()}',
+                      style: TextStyle(
+                        fontSize: size * 0.25, // حجم الخط يتناسب مع حجم الدائرة
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                      ),
+                    ),
+                    Text(
+                      '%',
+                      style: TextStyle(
+                        fontSize: size * 0.15, // حجم الخط يتناسب مع حجم الدائرة
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+

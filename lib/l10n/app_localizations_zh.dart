@@ -22,6 +22,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get menuRandomUsers => '随机用户';
 
   @override
+  String get menuOnlineUsers => '在线用户';
+
+  @override
+  String get menuNewestUsers => '最新用户';
+
+  @override
+  String get menuNearestUsers => '最近的用户';
+
+  @override
   String get menuCreditWallet => '信用钱包';
 
   @override

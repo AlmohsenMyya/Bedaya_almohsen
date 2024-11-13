@@ -22,6 +22,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get menuRandomUsers => 'مستخدمون عشوائيون';
 
   @override
+  String get menuOnlineUsers => 'مستخدمون اونلاين ';
+  @override
+  String get menuNewestUsers => 'مستخدمون جدد ';
+  @override
+  String get menuNearestUsers => 'مستخدمون بالقرب منك ';
+
+  @override
   String get menuCreditWallet => 'محفظة الرصيد';
 
   @override

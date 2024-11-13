@@ -169,7 +169,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "menuMyLikes": MessageLookupByLibrary.simpleMessage("Mes favoris"),
         "menuRandomUsers":
             MessageLookupByLibrary.simpleMessage("Utilisateurs aléatoires"),
-        "menuSettings": MessageLookupByLibrary.simpleMessage("Paramètres"),
+    "menuOnlineUsers":
+    MessageLookupByLibrary.simpleMessage("Utilisateurs aléatoires"),
+    "menuNewestUsers":
+    MessageLookupByLibrary.simpleMessage("Utilisateurs les plus récents"),
+    "menuNearestUsers":
+    MessageLookupByLibrary.simpleMessage("Utilisateurs les plus proches"),
+
+    "menuSettings": MessageLookupByLibrary.simpleMessage("Paramètres"),
         "menuVisitors": MessageLookupByLibrary.simpleMessage("Visiteurs"),
         "menuWhoLikesMe": MessageLookupByLibrary.simpleMessage("Qui m\'aime"),
         "messenger": MessageLookupByLibrary.simpleMessage("Messager"),

@@ -22,6 +22,15 @@ class AppLocalizationsPt extends AppLocalizations {
   String get menuRandomUsers => 'Usuários Aleatórios';
 
   @override
+  String get menuOnlineUsers => 'Usuários Online';
+
+  @override
+  String get menuNewestUsers => 'Usuários Mais Recentes';
+
+  @override
+  String get menuNearestUsers => 'Usuários Mais Próximos';
+
+  @override
   String get menuCreditWallet => 'Carteira de Créditos';
 
   @override

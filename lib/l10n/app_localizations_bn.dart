@@ -22,6 +22,15 @@ class AppLocalizationsBn extends AppLocalizations {
   String get menuRandomUsers => 'যদি ব্যবহারকারী';
 
   @override
+  String get menuOnlineUsers => 'অনলাইন ব্যবহারকারীরা';
+
+  @override
+  String get menuNewestUsers => 'নতুন ব্যবহারকারীরা';
+
+  @override
+  String get menuNearestUsers => 'নিকটতম ব্যবহারকারীরা';
+
+  @override
   String get menuCreditWallet => 'ক্রেডিট ওয়ালেট';
 
   @override

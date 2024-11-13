@@ -22,6 +22,15 @@ class AppLocalizationsMr extends AppLocalizations {
   String get menuRandomUsers => 'अनियमित वापरकर्ते';
 
   @override
+  String get menuOnlineUsers => 'ऑनलाइन वापरकर्ते';
+
+  @override
+  String get menuNewestUsers => 'नवीनतम वापरकर्ते';
+
+  @override
+  String get menuNearestUsers => 'जवळचे वापरकर्ते';
+
+  @override
   String get menuCreditWallet => 'क्रेडिट वॉलेट';
 
   @override

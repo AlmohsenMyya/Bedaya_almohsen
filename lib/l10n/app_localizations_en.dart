@@ -22,6 +22,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get menuRandomUsers => 'Random Users';
 
   @override
+  String get menuOnlineUsers => 'Online Users';
+
+  @override
+  String get menuNewestUsers => 'Newest Users';
+
+  @override
+  String get menuNearestUsers => 'Nearest Users';
+  @override
   String get menuCreditWallet => 'Credit Wallet';
 
   @override

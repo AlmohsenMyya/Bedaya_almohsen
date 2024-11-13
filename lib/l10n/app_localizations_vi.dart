@@ -21,6 +21,16 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get menuRandomUsers => 'Người dùng ngẫu nhiên';
 
+
+  @override
+  String get menuOnlineUsers => 'Người dùng trực tuyến';
+
+  @override
+  String get menuNewestUsers => 'Người dùng mới nhất';
+
+  @override
+  String get menuNearestUsers => 'Người dùng gần nhất';
+
   @override
   String get menuCreditWallet => 'Ví tiền tín dụng';
 

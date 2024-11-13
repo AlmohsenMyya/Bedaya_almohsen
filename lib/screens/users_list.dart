@@ -121,6 +121,14 @@ class _UsersListPageState extends State<UsersListPage>
   }
 
   void _loadMore() {
+    if (widget.pageBaseUrl == "random-user/newest" ||
+        widget.pageBaseUrl == "random-user/nearby") {
+      setState(() {
+        totalCount = items.length;
+        isRequestProcessing = false;
+      });
+      return;
+    }
     if (urlToCall != dataResponse['nextPageUrl'] &&
         (items.length < totalCount)) {
       isRequestProcessing = true;
@@ -282,6 +290,20 @@ class _UsersListPageState extends State<UsersListPage>
                                     Column(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
+                                        ProfileMatchingCircle(
+                                          completionPercentage: double.tryParse(
+                                              userItem['matchingPercentage']
+                                                  .toString())!,
+                                          size: 40, // ضع النسبة هنا (0-100)
+                                          // حجم الدائرة
+                                        ),
+                                        // ProfileMatchingCircle(
+                                        //   completionPercentage: double.tryParse(
+                                        //       "3")!,
+                                        //   size: 40, // ضع النسبة هنا (0-100)
+                                        //   // حجم الدائرة
+                                        // ),
+                                        Spacer(),
                                         Text(
                                           (userItem['fullName'] ??
                                                   userItem['userFullName']) ??

@@ -223,6 +223,78 @@ class AppDrawer extends StatelessWidget {
                   ));
             },
           ),
+// online
+          ListTile(
+            leading: const Icon(
+              Icons.online_prediction,
+              // color: Theme.of(context).primaryColor,
+            ),
+            title: Text(
+              context.lwTranslate.menuOnlineUsers,
+              style: const TextStyle(
+                // color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18),
+            ),
+            onTap: () {
+              // Then close the drawer
+              Navigator.pop(context);
+              navigatePage(
+                  context,
+                  UsersListPage(
+                    title: context.lwTranslate.menuOnlineUsers,
+                    pageBaseUrl: 'random-user/online',
+                  ));
+            },
+          ),
+          // newest
+          ListTile(
+            leading: const Icon(
+              Icons.fiber_new,
+              // color: Theme.of(context).primaryColor,
+            ),
+            title: Text(
+              context.lwTranslate.menuNewestUsers,
+              style: const TextStyle(
+                // color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18),
+            ),
+            onTap: () {
+              // Then close the drawer
+              Navigator.pop(context);
+              navigatePage(
+                  context,
+                  UsersListPage(
+                    title: context.lwTranslate.menuNewestUsers,
+                    pageBaseUrl: 'random-user/newest',
+                  ));
+            },
+          ),
+          //nearest
+          ListTile(
+            leading: const Icon(
+              Icons.location_on_outlined,
+              // color: Theme.of(context).primaryColor,
+            ),
+            title: Text(
+              context.lwTranslate.menuNearestUsers,
+              style: const TextStyle(
+                // color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18),
+            ),
+            onTap: () {
+              // Then close the drawer
+              Navigator.pop(context);
+              navigatePage(
+                  context,
+                  UsersListPage(
+                    title: context.lwTranslate.menuNearestUsers,
+                    pageBaseUrl: 'random-user/nearby',
+                  ));
+            },
+          ),
           ListTile(
             leading: const Icon(Icons.wallet),
             title: Text(context.lwTranslate.menuCreditWallet),

@@ -159,6 +159,24 @@ abstract class AppLocalizations {
   /// **'Random Users'**
   String get menuRandomUsers;
 
+  /// No description provided for @menuOnlineUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Online Users'**
+  String get menuOnlineUsers;
+
+  /// No description provided for @menuOnlineUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Online Users'**
+  String get menuNewestUsers;
+
+  /// No description provided for @menuOnlineUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Online Users'**
+  String get menuNearestUsers;
+
   /// No description provided for @menuCreditWallet.
   ///
   /// In en, this message translates to:

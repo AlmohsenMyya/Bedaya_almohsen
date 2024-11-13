@@ -21,6 +21,16 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get menuRandomUsers => 'Utilisateurs aléatoires';
 
+
+
+  @override
+  String get menuOnlineUsers => 'Utilisateurs en ligne';
+
+  @override
+  String get menuNewestUsers => 'Utilisateurs les plus récents';
+
+  @override
+  String get menuNearestUsers => 'Utilisateurs les plus proches';
   @override
   String get menuCreditWallet => 'Portefeuille de crédits';
 

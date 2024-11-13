@@ -21,6 +21,16 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get menuRandomUsers => 'यादृच्छिक उपयोगकर्ता';
 
+
+  @override
+  String get menuOnlineUsers => 'ऑनलाइन उपयोगकर्ता';
+
+  @override
+  String get menuNewestUsers => 'नवीनतम उपयोगकर्ता';
+
+  @override
+  String get menuNearestUsers => 'निकटतम उपयोगकर्ता';
+
   @override
   String get menuCreditWallet => 'क्रेडिट वॉलेट';
 

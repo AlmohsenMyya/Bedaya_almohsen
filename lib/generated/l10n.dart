@@ -99,6 +99,32 @@ class S {
       args: [],
     );
   }
+  String get menuOnlineUsers {
+    return Intl.message(
+      'Online Users',
+      name: 'menuOnlineUsers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get menuNewestUsers {
+    return Intl.message(
+      'Newest Users',
+      name: 'menuNewestUsers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get menuNearestUsers {
+    return Intl.message(
+      'Nearest Users',
+      name: 'menuNearestUsers',
+      desc: '',
+      args: [],
+    );
+  }
 
   /// `Credit Wallet`
   String get menuCreditWallet {

@@ -22,6 +22,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get menuRandomUsers => 'Случайные пользователи';
 
   @override
+  String get menuOnlineUsers => 'Онлайн пользователи';
+
+  @override
+  String get menuNewestUsers => 'Новые пользователи';
+
+  @override
+  String get menuNearestUsers => 'Ближайшие пользователи';
+
+  @override
   String get menuCreditWallet => 'Кошелёк кредитов';
 
   @override
