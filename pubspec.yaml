@@ -48,8 +48,7 @@ dependencies:
   convex_bottom_bar: ^3.1.0+1
   progress_loading_button: ^2.0.2
   photo_card_swiper:
-    git:
-      url: https://github.com/livelyworks/photo_card_swiper
+    path: local_packege/photo_card_swiper_main
   animations: ^2.0.7
   expandable: ^5.0.1
   photo_view: ^0.15.0

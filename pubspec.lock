@@ -888,11 +888,9 @@ packages:
   photo_card_swiper:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "532dacc95926170fda9d5a289fe0ce10100aeedf"
-      url: "https://github.com/livelyworks/photo_card_swiper"
-    source: git
+      path: "local_packege/photo_card_swiper_main"
+      relative: true
+    source: path
     version: "0.0.6"
   photo_view:
     dependency: "direct main"
