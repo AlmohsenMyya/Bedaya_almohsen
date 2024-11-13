@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "loveria_almohsen" "\0"
+            VALUE "FileDescription", "bedaya" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "loveria_almohsen" "\0"
+            VALUE "InternalName", "bedaya" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "loveria_almohsen.exe" "\0"
-            VALUE "ProductName", "loveria_almohsen" "\0"
+            VALUE "OriginalFilename", "bedaya.exe" "\0"
+            VALUE "ProductName", "bedaya" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

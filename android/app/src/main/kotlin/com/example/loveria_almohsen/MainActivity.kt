@@ -1,4 +1,4 @@
-package com.example.loveria_almohsen
+package com.example.bedaya
 
 import io.flutter.embedding.android.FlutterActivity
 
