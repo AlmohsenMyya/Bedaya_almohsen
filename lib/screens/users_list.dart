@@ -163,11 +163,7 @@ class _UsersListPageState extends State<UsersListPage>
                   mini: true,
                   child: const Icon(Icons.filter_alt),
                   onPressed: () {
-                    if (!userInfo['is_premium']) {
-                      navigatePage(context, BePremiumAlertInfo());
-                    } else {
-                      _showFilterBottomSheet(context);
-                    }
+                    _showFilterBottomSheet(context);
                   }),
             )
           : null,
@@ -907,6 +903,15 @@ class _UsersListPageState extends State<UsersListPage>
                       })
                 ],
                 bottom: TabBar(
+                  onTap: (int index) {
+                    if (index != 0 && !userInfo['is_premium']) {
+                      tabController.index = 0;
+                      navigatePage(context, BePremiumAlertInfo());
+
+                    } else {
+                      tabController.index = index;
+                    }
+                  },
                   isScrollable: true,
                   controller: tabController,
                   tabs: filterTabs,
