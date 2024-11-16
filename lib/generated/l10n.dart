@@ -101,7 +101,7 @@ class S {
   }
   String get menuOnlineUsers {
     return Intl.message(
-      'Online Users',
+      'Recently Online',
       name: 'menuOnlineUsers',
       desc: '',
       args: [],

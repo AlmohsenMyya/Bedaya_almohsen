@@ -162,7 +162,7 @@ abstract class AppLocalizations {
   /// No description provided for @menuOnlineUsers.
   ///
   /// In en, this message translates to:
-  /// **'Online Users'**
+  /// **'Recently Online'**
   String get menuOnlineUsers;
 
   /// No description provided for @menuNewestUsers.

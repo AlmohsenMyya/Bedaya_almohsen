@@ -22,7 +22,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get menuRandomUsers => 'Random Users';
 
   @override
-  String get menuOnlineUsers => 'Online Users';
+  String get menuOnlineUsers => 'Recently Online';
 
   @override
   String get menuNewestUsers => 'Newest Users';
