@@ -32,9 +32,12 @@ class _MessengerChatListPageState extends State<MessengerChatListPage> {
   void initState() {
     super.initState();
     setState(() {
-      targetUserId = widget.sourceElement['user_id'] ??
-          widget.sourceElement['_id'] ??
-          widget.sourceElement['id'];
+      targetUserId = int.tryParse(
+          widget.sourceElement['user_id']?.toString() ??
+              widget.sourceElement['_id']?.toString() ??
+              widget.sourceElement['id']?.toString() ??
+              '0')!; // القيمة الافتراضية إذا لم يتم العثور على أي منها
+
     });
   }
 
@@ -243,8 +246,9 @@ class _ChatListWidgetState extends State<ChatListWidget> {
   @override
   void initState() {
     super.initState();
+
     targetUserId =
-        widget.sourceElement["user_id"] ?? widget.sourceElement["_id"];
+    int.tryParse(widget.sourceElement["user_id"] ?? widget.sourceElement["_id"] ?? "0")!    ;
     messageDraftFocusNode = FocusNode();
     data_transport
         .get('messenger/$targetUserId/get-user-messages', context: context)
