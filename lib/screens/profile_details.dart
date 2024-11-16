@@ -1152,17 +1152,19 @@ class ProfileCompletionBar extends StatelessWidget {
 class ProfileMatchingCircle extends StatelessWidget {
   final double completionPercentage; // نسبة اكتمال البروفايل (0-100)
   final double size; // حجم الدائرة
+  final bool? noPadding ;
 
   const ProfileMatchingCircle({
     Key? key,
     required this.completionPercentage,
     required this.size,
+    this.noPadding
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(15.0),
+      padding: noPadding!=null? EdgeInsets.all(0.0) : EdgeInsets.all(25.0),
       child: GestureDetector(
         onTap: () {
           // عند النقر على الدائرة، نعرض مربع الحوار
@@ -1175,12 +1177,13 @@ class ProfileMatchingCircle extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                content: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Stack(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: 25,),
+                    Padding(
+                      padding: const EdgeInsets.all(0.0),
+                      child: Stack(
                         alignment: Alignment.center,
                         children: [
                           // الدائرة الخارجية كنسبة الاكتمال
@@ -1218,18 +1221,18 @@ class ProfileMatchingCircle extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
-                      Text(
-                        'This is your match percentage with this profile.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                        ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'This is your match percentage with this profile.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               );
             },
