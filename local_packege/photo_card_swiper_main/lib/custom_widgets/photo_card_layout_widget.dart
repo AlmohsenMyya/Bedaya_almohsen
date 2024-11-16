@@ -20,18 +20,27 @@ class PhotoCardLayoutWidget extends StatefulWidget {
   final IconData? leftButtonIcon;
   final IconData? centerButtonIcon;
   final IconData? rightButtonIcon;
+  final IconData? farLeftButtonIcon; // New property
+  final IconData? farRightButtonIcon; // New property
   final Color? leftButtonIconColor;
   final Color? leftButtonBackgroundColor;
   final Color? centerButtonIconColor;
   final Color? centerButtonBackgroundColor;
   final Color? rightButtonIconColor;
   final Color? rightButtonBackgroundColor;
+  final Color? farLeftButtonIconColor; // New property
+  final Color? farLeftButtonBackgroundColor; // New property
+  final Color? farRightButtonIconColor; // New property
+  final Color? farRightButtonBackgroundColor; // New property
   final Function? leftButtonAction;
   final Function? centerButtonAction;
   final Function? rightButtonAction;
   final Function? onCardTap;
   final int photoIndex;
   final Color cardBgColor;
+  final Function onFarLeftButtonTap; // New property
+  final Function onFarRightButtonTap; // New property
+  final Widget farRightWidget ;
 
   PhotoCardLayoutWidget({
     required this.photoCard,
@@ -49,17 +58,26 @@ class PhotoCardLayoutWidget extends StatefulWidget {
     this.leftButtonIcon,
     this.centerButtonIcon,
     this.rightButtonIcon,
+    this.farLeftButtonIcon, // New parameter
+    this.farRightButtonIcon, // New parameter
     this.leftButtonIconColor,
     this.leftButtonBackgroundColor,
     this.centerButtonIconColor,
     this.centerButtonBackgroundColor,
     this.rightButtonIconColor,
     this.rightButtonBackgroundColor,
+    this.farLeftButtonIconColor, // New parameter
+    this.farLeftButtonBackgroundColor, // New parameter
+    this.farRightButtonIconColor, // New parameter
+    this.farRightButtonBackgroundColor, // New parameter
     this.leftButtonAction,
     this.centerButtonAction,
     this.rightButtonAction,
     this.onCardTap,
+    required this.onFarLeftButtonTap, // New parameter
+    required this.onFarRightButtonTap, // New parameter
     this.cardBgColor = Colors.black,
+    required this.farRightWidget,
     Key? key,
   }) : super(key: key);
 
@@ -130,6 +148,16 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      FarLeftButtonWidget(
+                        leftButtonBackgroundColor:
+                        widget.farLeftButtonBackgroundColor,
+                        leftButtonIconColor: widget.farLeftButtonIconColor,
+                        leftButtonAction: widget.onFarLeftButtonTap,
+                        leftButtonIcon: widget.farLeftButtonIcon,
+                      ),
+                      SizedBox(
+                        width: 15.0,
+                      ),
                       LeftButtonWidget(
                         leftButtonBackgroundColor:
                             widget.leftButtonBackgroundColor,
@@ -159,6 +187,18 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
                         rightButtonIconColor: widget.rightButtonIconColor,
                         rightButtonAction: widget.rightButtonAction,
                         rightButtonIcon: widget.rightButtonIcon,
+                      ),
+
+                      SizedBox(
+                        width: 15.0,
+                      ),
+                      FarRightButtonWidget(
+                        farRightWidget: widget.farRightWidget,
+                        rightButtonBackgroundColor:
+                        widget.farRightButtonBackgroundColor,
+                        rightButtonIconColor: widget.farRightButtonIconColor,
+                        rightButtonAction: widget.onFarRightButtonTap,
+                        rightButtonIcon: widget.farRightButtonIcon,
                       ),
                     ],
                   ),
@@ -332,6 +372,56 @@ class RightButtonWidget extends StatelessWidget {
     );
   }
 }
+class FarRightButtonWidget extends StatelessWidget {
+  const FarRightButtonWidget({
+    Key? key,
+    required this.rightButtonBackgroundColor,
+    required this.rightButtonIconColor,
+    required this.rightButtonAction,
+    required this.rightButtonIcon,
+    required this.farRightWidget
+  }) : super(key: key);
+
+  final Color? rightButtonBackgroundColor;
+  final Color? rightButtonIconColor;
+  final Function? rightButtonAction;
+  final IconData? rightButtonIcon;
+  final Widget farRightWidget;
+
+  @override
+  Widget build(BuildContext context) {
+    return  InkWell(
+      splashColor: Colors.white,
+      child:farRightWidget,
+      onTap: () {
+        if (rightButtonAction != null) {
+          rightButtonAction!();
+        }
+      },
+    );
+    return ClipOval(
+      child: Material(
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+              color: Colors.grey[200] ?? Colors.grey,
+              // width: 3,
+              style: BorderStyle.solid),
+          // borderRadius: BorderRadius.circular(25),
+        ),
+        color: rightButtonBackgroundColor ?? Colors.lightGreen[100],
+        child: InkWell(
+          splashColor: Colors.white,
+          child:farRightWidget,
+          onTap: () {
+            if (rightButtonAction != null) {
+              rightButtonAction!();
+            }
+          },
+        ),
+      ),
+    );
+  }
+}
 
 class LeftButtonWidget extends StatelessWidget {
   const LeftButtonWidget({
@@ -368,6 +458,52 @@ class LeftButtonWidget extends StatelessWidget {
                 leftButtonIcon ?? Icons.close,
                 color: leftButtonIconColor ?? Colors.red[800],
                 size: 50,
+              )),
+          onTap: () {
+            if (leftButtonAction != null) {
+              leftButtonAction!();
+            }
+          },
+        ),
+      ),
+    );
+  }
+}
+class FarLeftButtonWidget extends StatelessWidget {
+  const FarLeftButtonWidget({
+    Key? key,
+    required this.leftButtonBackgroundColor,
+    required this.leftButtonIconColor,
+    required this.leftButtonAction,
+    required this.leftButtonIcon,
+  }) : super(key: key);
+
+  final Color? leftButtonBackgroundColor;
+  final Color? leftButtonIconColor;
+  final Function? leftButtonAction;
+  final IconData? leftButtonIcon;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipOval(
+      child: Material(
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+              color: Colors.grey[200] ?? Colors.grey,
+              width: 3,
+              style: BorderStyle.solid),
+          borderRadius: BorderRadius.circular(25),
+        ),
+        color: leftButtonBackgroundColor ?? Colors.red[100],
+        child: InkWell(
+          splashColor: Colors.white,
+          child: SizedBox(
+              width: 37,
+              height: 37,
+              child: Icon(
+                leftButtonIcon ?? Icons.close,
+                color: leftButtonIconColor ?? Colors.red[800],
+                size: 30,
               )),
           onTap: () {
             if (leftButtonAction != null) {

@@ -9,6 +9,8 @@ import 'package:photo_card_swiper/notifiers/feedback_photo_card_value_notifier.d
 
 //State of card movement
 enum CardActionDirection {
+  cardFarLeftAction,
+  cardFarRightAction,
   cardRightAction,
   cardLeftAction,
   cardCenterAction,
@@ -40,6 +42,15 @@ class PhotoCardSwiper extends StatefulWidget {
   final Function? rightButtonAction;
   final Function? onCardTap;
   final Color cardBgColor;
+  final IconData? farLeftButtonIcon;
+  final IconData? farRightButtonIcon;
+  final Color? farLeftButtonIconColor;
+  final Color? farLeftButtonBackgroundColor;
+  final Color? farRightButtonIconColor;
+  final Color? farRightButtonBackgroundColor;
+  final Function? farLeftButtonAction;
+  final Function? farRightButtonAction;
+  final Widget farRightWidget;
 
   PhotoCardSwiper({
     required this.photos,
@@ -64,6 +75,16 @@ class PhotoCardSwiper extends StatefulWidget {
     this.rightButtonAction,
     this.onCardTap,
     this.cardBgColor = Colors.black,
+    this.farLeftButtonIcon,
+    this.farRightButtonIcon,
+    this.farLeftButtonIconColor,
+    this.farLeftButtonBackgroundColor,
+    this.farRightButtonIconColor,
+    this.farRightButtonBackgroundColor,
+    this.farLeftButtonAction,
+    this.farRightButtonAction,
+    required this.farRightWidget
+
   });
   @override
   _PhotoCardSwiperState createState() => _PhotoCardSwiperState();
@@ -83,6 +104,8 @@ class _PhotoCardSwiperState extends State<PhotoCardSwiper> {
   bool _isPhotoCardRightOverlayShown = false;
   bool _isPhotoCardCenterOverlayShown = false;
 
+  bool _isPhotoCardFarLeftOverlayShown = false;
+  bool _isPhotoCardFarRightOverlayShown = false;
   FeedbackPhotoCardValueNotifier _feedbackPhotoCardValueNotifier =
       FeedbackPhotoCardValueNotifier();
 
@@ -157,27 +180,40 @@ class _PhotoCardSwiperState extends State<PhotoCardSwiper> {
                           onDragStarted: () {},
                           onDragEnd: (details) {
                             _hideAllPhotoCardOverlayWidgets();
-                            if (details.offset.dx > 150.0) {
+                            if (details.offset.dx > 200.0) {
                               _updatedPhotos.removeAt(_index);
                               _likeCard(forIndex: _index);
-                            } else if (details.offset.dx < -150.0) {
+                            } else if (details.offset.dx < -200.0) {
                               _updatedPhotos.removeAt(_index);
                               _unlikeCard(forIndex: _index);
+                            } else if (details.offset.dx > 100.0) {
+                              _updatedPhotos.removeAt(_index);
+                              _likeFarRightCard(forIndex: _index);
+                            } else if (details.offset.dx < -100.0) {
+                              _updatedPhotos.removeAt(_index);
+                              _unlikeFarLeftCard(forIndex: _index);
                             }
                           },
                           onDragUpdate: (DragUpdateDetails details) {
-                            if (details.delta.dx < -3) {
-                              _feedbackPhotoCardValueNotifier
-                                  .updateCardSwipeActionValue(
-                                      value:
-                                          CardActionDirection.cardLeftAction);
-                            } else if (details.delta.dx > 3) {
-                              _feedbackPhotoCardValueNotifier
-                                  .updateCardSwipeActionValue(
-                                      value:
-                                          CardActionDirection.cardRightAction);
-                            }
-                          },
+                          if (details.delta.dx < -3 && details.delta.dx > -10) {
+                            _feedbackPhotoCardValueNotifier.updateCardSwipeActionValue(
+                              value: CardActionDirection.cardLeftAction,
+                            );
+                          } else if (details.delta.dx <= -10) {
+                            _feedbackPhotoCardValueNotifier.updateCardSwipeActionValue(
+                              value: CardActionDirection.cardFarLeftAction,
+                            );
+                          } else if (details.delta.dx > 3 && details.delta.dx < 10) {
+                            _feedbackPhotoCardValueNotifier.updateCardSwipeActionValue(
+                              value: CardActionDirection.cardRightAction,
+                            );
+                          } else if (details.delta.dx >= 10) {
+                            _feedbackPhotoCardValueNotifier.updateCardSwipeActionValue(
+                              value: CardActionDirection.cardFarRightAction,
+                            );
+                          }
+                        },
+
                           feedback: FeedbackPhotoCardWidget(
                               cardHeight: _updatedCardHeight,
                               cardWidth: _cardWidth,
@@ -204,6 +240,7 @@ class _PhotoCardSwiperState extends State<PhotoCardSwiper> {
                               rightButtonIconColor: widget.rightButtonIconColor,
                               cardBgColor: widget.cardBgColor),
                           child: PhotoCardLayoutWidget(
+                            farRightWidget: widget.farRightWidget,
                             cardBgColor: widget.cardBgColor,
                             cardHeight: _updatedCardHeight,
                             cardWidth: _cardWidth,
@@ -231,6 +268,21 @@ class _PhotoCardSwiperState extends State<PhotoCardSwiper> {
                             rightButtonIconColor: widget.rightButtonIconColor,
                             onCardTap: widget.onCardTap,
                             photoIndex: _tapIndex,
+
+                            farLeftButtonIcon: widget.farLeftButtonIcon,
+                            farRightButtonIcon: widget.farRightButtonIcon,
+                            farLeftButtonIconColor: widget.farLeftButtonIconColor,
+                            farLeftButtonBackgroundColor:
+                            widget.farLeftButtonBackgroundColor,
+                            farRightButtonIconColor: widget.farRightButtonIconColor,
+                            farRightButtonBackgroundColor:
+                            widget.farRightButtonBackgroundColor,
+                            onFarLeftButtonTap: () {
+                              widget.farLeftButtonAction?.call();
+                            },
+                            onFarRightButtonTap: () {
+                              widget.farRightButtonAction?.call();
+                            },
                             leftButtonAction: () {
                               setState(() {
                                 _showLeftPhotoCardOverlayWidget();
@@ -281,9 +333,21 @@ class _PhotoCardSwiperState extends State<PhotoCardSwiper> {
       },
     );
   }
+  void _likeFarRightCard({required int forIndex}) {
+    if (widget.cardSwiped != null) {
+      widget.cardSwiped!(CardActionDirection.cardFarRightAction, forIndex);
+    }
+  }
 
+  void _unlikeFarLeftCard({required int forIndex}) {
+    if (widget.cardSwiped != null) {
+      widget.cardSwiped!(CardActionDirection.cardFarLeftAction, forIndex);
+    }
+  }
 //Hide show overlay widgets
   void _hideAllPhotoCardOverlayWidgets() {
+    _isPhotoCardFarLeftOverlayShown = false;
+    _isPhotoCardFarRightOverlayShown = false;
     _isPhotoCardCenterOverlayShown = false;
     _isPhotoCardRightOverlayShown = false;
     _isPhotoCardLeftOverlayShown = false;
