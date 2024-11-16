@@ -21,6 +21,7 @@ class EncounterPageState extends State<EncounterPage> {
   PhotoCard? encounterCard;
   Map encounteredUserData = {};
   bool isLoaded = false;
+  bool isSkiped = false;
   bool encounterAvailability = false;
   List<PhotoCard> encounterCards = [];
   List<Map> previousProfiles = []; // Stack to store previous profiles
@@ -41,6 +42,7 @@ class EncounterPageState extends State<EncounterPage> {
       onSuccess: (responseData) {
         setState(() {
           isLoaded = true;
+          isSkiped = true;
           encounterAvailability =
               getItemValue(responseData, 'data.encounterAvailability');
 
@@ -85,13 +87,32 @@ class EncounterPageState extends State<EncounterPage> {
                       height: double.infinity,
                       imageUrl: encounteredUserData['userCoverUrl'],
                     ),
+                    // Positioned(
+                    //   bottom: 10,
+                    //   child: CircleAvatar(
+                    //     radius: 80,
+                    //     backgroundImage: appCachedNetworkImageProvider(
+                    //       imageUrl: encounteredUserData['userImageUrl'],
+                    //     ),
+                    //   ),
+                    // ),
+                    Positioned(bottom:25, child:     Container(
+                      width: 60, // حجم الخلفية أكبر قليلاً من الدائرة
+                      height: 60,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.black38.withOpacity(0.5), // لون أبيض شفاف
+                      ),
+                    )),
                     Positioned(
-                      bottom: 10,
-                      child: CircleAvatar(
-                        radius: 80,
-                        backgroundImage: appCachedNetworkImageProvider(
-                          imageUrl: encounteredUserData['userImageUrl'],
-                        ),
+                      bottom: 25,
+                      child: ProfileMatchingCircle(
+                        completionPercentage: double.tryParse(
+                            encounteredUserData['matchingPercentage']
+                                .toString())!,
+                        size: 60, // ضع النسبة هنا (0-100)
+                        noPadding: true,
+                        // حجم الدائرة
                       ),
                     ),
                     if ((encounteredUserData['isPremiumUser'] != null) &&
@@ -199,6 +220,12 @@ class EncounterPageState extends State<EncounterPage> {
     }
   }
 
+  void stattty() {
+    setState(() {
+      isSkiped = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -206,86 +233,127 @@ class EncounterPageState extends State<EncounterPage> {
       body: !isLoaded
           ? const Center(child: AppItemProgressIndicator())
           : encounterAvailability == false
-          ? const BePremiumAlertInfo()
-          : (encounteredUserData.isNotEmpty
-          ? Stack(
-        children: [
-          SizedBox.expand(
-            child: PhotoCardSwiper(
-              cardBgColor: const Color.fromARGB(100, 0, 0, 0),
-              photos: encounterCards,
-              showLoading: true,
-              hideCenterButton: false,
-              leftButtonIcon: CupertinoIcons.heart_slash_circle_fill,
-              rightButtonIcon: CupertinoIcons.heart_circle_fill,
-              centerButtonIcon: Icons.chevron_right,
-              onCardTap: (params) {
-                navigatePage(
-                    context,
-                    ProfileDetailsPage(
-                      userProfileItem: {
-                        'fullName': encounteredUserData['userFullName'],
-                        'profileImage': encounteredUserData['userImageUrl'],
-                        'coverImage': encounteredUserData['userCoverUrl'],
-                        'id': encounteredUserData['_id'],
-                        'username': encounteredUserData['username'],
-                      },
-                    ));
-              },
-              cardSwiped: (CardActionDirection direction, int index) {
-                if (direction == CardActionDirection.cardCenterAction) {
-                  data_transport.post(
-                      "encounters/${encounteredUserData['_uid']}/skip-encounter-user",
-                      context: context,
-                      onSuccess: (responseData) {
-                        getEncounterData();
-                      });
-                }
-              },
-              rightButtonAction: () {
-                data_transport.post(
-                    "encounters/${encounteredUserData['_uid']}/1/user-encounter-like-dislike",
-                    context: context, onSuccess: (responseData) {
-                  getEncounterData();
-                });
-              },
-              leftButtonAction: () {
-                data_transport.post(
-                    "encounters/${encounteredUserData['_uid']}/2/user-encounter-like-dislike",
-                    context: context, onSuccess: (responseData) {
-                  getEncounterData();
-                });
-              },
-            ),
-          ),
-          Positioned(
-            bottom: 27.5.h,
-            right: 80.5.w,
-            child: previousProfiles.isNotEmpty
-                ? IconButton(
-              onPressed: () {
-                navigateToPreviousProfile();
-              },
-              icon: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.blue.shade50,
-                  border: Border.all(
-                      color: Colors.white, width: 3),
-                ),
-                padding: const EdgeInsets.all(8),
-                child: Icon(Icons.chevron_left,
-                    color: Colors.blue, size: 3.h),
-              ),
-            )
-                : SizedBox.shrink(),
-          ),
-        ],
-      )
-          : Center(
-        child: Text(context.lwTranslate
-            .yourDailyLimitForEncountersMayExceedOrThereAre),
-      )),
+              ? const BePremiumAlertInfo()
+              : (encounteredUserData.isNotEmpty
+                  ? Stack(
+                      children: [
+                        SizedBox.expand(
+                          child: PhotoCardSwiper(
+                            farRightWidget:
+                            ProfileMatchingCircle(
+                                  completionPercentage: double.tryParse(
+                                      encounteredUserData['matchingPercentage']
+                                          .toString())!,
+                                  size: 30, // ضع النسبة هنا (0-100)
+                              noPadding: true,
+                                  // حجم الدائرة
+                                )
+                            ,
+                            farLeftButtonIcon: Icons.chevron_left,
+                            farRightButtonIcon: Icons.lan_rounded,
+                            farLeftButtonAction: () {
+                              if (previousProfiles.isNotEmpty && isSkiped) {
+
+                                            navigateToPreviousProfile();
+                              }
+                            },
+                            farRightButtonAction: () {},
+                            cardBgColor: const Color.fromARGB(100, 0, 0, 0),
+                            photos: encounterCards,
+                            showLoading: true,
+                            hideCenterButton: false,
+                            leftButtonIcon:
+                                CupertinoIcons.heart_slash_circle_fill,
+                            rightButtonIcon: CupertinoIcons.heart_circle_fill,
+                            centerButtonIcon: Icons.chevron_right,
+                            onCardTap: (params) {
+                              navigatePage(
+                                  context,
+                                  ProfileDetailsPage(
+                                    userProfileItem: {
+                                      'fullName':
+                                          encounteredUserData['userFullName'],
+                                      'profileImage':
+                                          encounteredUserData['userImageUrl'],
+                                      'coverImage':
+                                          encounteredUserData['userCoverUrl'],
+                                      'id': encounteredUserData['_id'],
+                                      'username':
+                                          encounteredUserData['username'],
+                                    },
+                                  ));
+                            },
+                            cardSwiped:
+                                (CardActionDirection direction, int index) {
+                              if (direction ==
+                                  CardActionDirection.cardCenterAction) {
+                                data_transport.post(
+                                    "encounters/${encounteredUserData['_uid']}/skip-encounter-user",
+                                    context: context,
+                                    onSuccess: (responseData) {
+                                  getEncounterData();
+                                });
+                              }
+                            },
+                            rightButtonAction: () {
+                              data_transport.post(
+                                  "encounters/${encounteredUserData['_uid']}/1/user-encounter-like-dislike",
+                                  context: context, onSuccess: (responseData) {
+                                getEncounterData();
+                              });
+                            },
+                            leftButtonAction: () {
+                              data_transport.post(
+                                  "encounters/${encounteredUserData['_uid']}/2/user-encounter-like-dislike",
+                                  context: context, onSuccess: (responseData) {
+                                getEncounterData();
+                              });
+                            },
+                          ),
+                        ),
+                        //
+                        // Positioned(
+                        //   bottom: 27.5.h,
+                        //   right: 80.5.w,
+                        //   child: previousProfiles.isNotEmpty && isSkiped
+                        //       ? IconButton(
+                        //           onPressed: () {
+                        //             navigateToPreviousProfile();
+                        //           },
+                        //           icon: Container(
+                        //             decoration: BoxDecoration(
+                        //               shape: BoxShape.circle,
+                        //               color: Colors.blue.shade50,
+                        //               border: Border.all(
+                        //                   color: Colors.white, width: 3),
+                        //             ),
+                        //             padding: const EdgeInsets.all(8),
+                        //             child: Icon(Icons.chevron_left,
+                        //                 color: Colors.blue, size: 3.h),
+                        //           ),
+                        //         )
+                        //       : SizedBox.shrink(),
+                        // ),
+                        // Positioned(
+                        //   bottom: 27.5.h,
+                        //   left: 80.5.w,
+                        //   right: 0.w,
+                        //   child: previousProfiles.isNotEmpty
+                        //       ? ProfileMatchingCircle(
+                        //     completionPercentage: double.tryParse(
+                        //         encounteredUserData['matchingPercentage']
+                        //             .toString())!,
+                        //     size: 40, // ضع النسبة هنا (0-100)
+                        //     // حجم الدائرة
+                        //   )
+                        //       : SizedBox.shrink(),
+                        // ),
+                      ],
+                    )
+                  : Center(
+                      child: Text(context.lwTranslate
+                          .yourDailyLimitForEncountersMayExceedOrThereAre),
+                    )),
     );
   }
 }
