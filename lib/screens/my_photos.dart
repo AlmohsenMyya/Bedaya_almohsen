@@ -4,10 +4,21 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import '../common/services/data_transport.dart' as data_transport;
 import '../common/services/utils.dart';
 import '../common/widgets/common.dart';
 import 'user_common.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+Future<void> requestStoragePermission() async {
+  if (await Permission.storage.request().isGranted) {
+    print("Storage permission granted");
+  } else {
+    print("Storage permission denied");
+    throw Exception("Storage permission is required to pick files");
+  }
+}
 
 class MyPhotosPage extends StatefulWidget {
   const MyPhotosPage({super.key});
@@ -188,61 +199,84 @@ class _MyPhotosPageState extends State<MyPhotosPage> {
     );
   }
 
+
   void pickAndUploadFile(context, url,
       {Function? onSuccess,
-      Function? thenCallback,
-      Function? onError,
-      Function? onStart,
-      FileType pickingType = FileType.image,
-      bool allowMultiple = false,
-      String? allowedExtensions = ''}) async {
+        Function? thenCallback,
+        Function? onError,
+        Function? onStart,
+        FileType pickingType = FileType.image,
+        bool allowMultiple = false,
+        String? allowedExtensions = ''}) async {
     try {
-      var paths = (await FilePicker.platform.pickFiles(
-        type: pickingType,
-        allowedExtensions: (allowedExtensions?.isNotEmpty ?? false)
-            ? allowedExtensions?.replaceAll(' ', '').split(',')
-            : null,
-      ))
-          ?.files;
-      String uploadedImageName = paths?[0].path ?? '';
-      if ((uploadedImageName == '')) {
+      print("Start picking files");
+
+      // اختيار الصور باستخدام ImagePicker
+      final ImagePicker picker = ImagePicker();
+      XFile? pickedFile;
+
+      if (pickingType == FileType.image) {
+        pickedFile = await picker.pickImage(
+          source: ImageSource.gallery, // يمكن تغييره إلى الكاميرا
+        );
+      } else {
+        throw Exception('Unsupported FileType: Only image files are supported');
+      }
+
+      if (pickedFile == null) {
+        print("No file selected");
         setState(() {
           isLoading = false;
         });
         return;
       }
+
+      String uploadedImageName = pickedFile.path;
+      print("Selected file path: $uploadedImageName");
+
+      if (uploadedImageName.isEmpty) {
+        print("No file path provided");
+        setState(() {
+          isLoading = false;
+        });
+        return;
+      }
+
       if (onStart != null) {
         onStart(uploadedImageName);
       }
+
       // blank loader container
       var randomNumberId = Random().nextInt(99999);
       photosData.add({'image_url': '', 'randomNumberId': randomNumberId});
+
       data_transport.uploadFile(uploadedImageName, url, context: context,
           onError: (error) {
-        setState(() {
-          photosData.removeWhere((item) => item['image_url'] == '');
-        });
-        if (onError != null) {
-          onError(e);
-        }
-      }, thenCallback: (data) {
-        if (getItemValue(data, 'reaction') != 1) {
-          setState(() {
-            photosData.removeWhere((item) => item['image_url'] == '');
+            setState(() {
+              photosData.removeWhere((item) => item['image_url'] == '');
+            });
+            if (onError != null) {
+              onError(error);
+            }
+          }, thenCallback: (data) {
+            if (getItemValue(data, 'reaction') != 1) {
+              setState(() {
+                photosData.removeWhere((item) => item['image_url'] == '');
+              });
+            }
+            if (thenCallback != null) {
+              thenCallback(data);
+            }
+          }, onSuccess: (data) {
+            setState(() {
+              // remove loading container
+              photosData
+                  .removeWhere((item) => item['randomNumberId'] == randomNumberId);
+              photosData.add(data?['data']['stored_photo']);
+            });
           });
-        }
-        if (thenCallback != null) {
-          thenCallback(data);
-        }
-      }, onSuccess: (data) {
-        setState(() {
-          // remove loading container
-          photosData
-              .removeWhere((item) => item['randomNumberId'] == randomNumberId);
-          photosData.add(data?['data']['stored_photo']);
-        });
-      });
     } on PlatformException catch (e) {
+      print("PlatformException occurred: $e");
       setState(() {
         photosData.removeWhere((item) => item['image_url'] == '');
         isLoading = false;
@@ -250,9 +284,9 @@ class _MyPhotosPageState extends State<MyPhotosPage> {
       if (onError != null) {
         onError(e);
       }
-      pr('Unsupported operation ${e.toString()}');
       showToastMessage(context, context.lwTranslate.failed, type: 'error');
     } catch (e) {
+      print("Error occurred: $e");
       setState(() {
         isLoading = false;
       });
@@ -260,6 +294,5 @@ class _MyPhotosPageState extends State<MyPhotosPage> {
         onError(e);
       }
       showToastMessage(context, context.lwTranslate.failed, type: 'error');
-    }
-  }
+    }}
 }

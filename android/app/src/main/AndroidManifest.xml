@@ -1,13 +1,18 @@
 <manifest xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <!--  Read and write access for JSON file handling (for API level < 29)  -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" tools:targetApi="donut"/>
-    <!--  Notification permission (for Android 13+ API level 33)  -->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" android:maxSdkVersion="32" tools:targetApi="donut"/>
+<!--    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>-->
+<!--    &lt;!&ndash;  Read and write access for JSON file handling (for API level < 29)  &ndash;&gt;-->
+<!--    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>-->
+<!--    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" tools:targetApi="donut"/>-->
+<!--    &lt;!&ndash;  Notification permission (for Android 13+ API level 33)  &ndash;&gt;-->
+<!--    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" android:maxSdkVersion="32" tools:targetApi="donut"/>-->
+<!--    <uses-permission android:name="android.permission.CAMERA" />-->
 
     <application
         android:label="bedaya"
