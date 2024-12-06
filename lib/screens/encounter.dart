@@ -97,7 +97,8 @@ class EncounterPageState extends State<EncounterPage> {
                     //     ),
                     //   ),
                     // ),
-                    Positioned(bottom:25, child:     Container(
+                    Positioned(                      top: 10,
+                        right: 10, child:     Container(
                       width: 60, // حجم الخلفية أكبر قليلاً من الدائرة
                       height: 60,
                       decoration: BoxDecoration(
@@ -106,7 +107,8 @@ class EncounterPageState extends State<EncounterPage> {
                       ),
                     )),
                     Positioned(
-                      bottom: 25,
+                      top: 10,
+                      right: 10,
                       child: ProfileMatchingCircle(
                         completionPercentage: double.tryParse(
                             encounteredUserData['matchingPercentage']
