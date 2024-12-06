@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart' as badges;
+import 'package:bedaya/screens/sliders_age_distance.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../common/services/auth.dart';
@@ -452,6 +453,34 @@ class _UsersListPageState extends State<UsersListPage>
             : '';
 
         List<Widget> filterChildren = <Widget>[
+
+
+SizedBox(height: 20,),
+          AgeSlider(
+            labelText: context.lwTranslate.minimumAge,
+            initialMinAge: int.tryParse(tempFilterInputData['min_age']) ?? 18,
+            initialMaxAge: int.tryParse(tempFilterInputData['max_age']) ?? 70,
+            onChanged: (minAge, maxAge) {
+              _updateTempFindFilterData(context, 'min_age', minAge.toString());
+              _updateTempFindFilterData(context, 'max_age', maxAge.toString());
+            },
+          ),
+          DistanceSlider(
+            labelText: context.lwTranslate.distanceFromMyLocationDistanceUnit(
+                basicFilterData['distanceUnit']),
+            initialDistance: int.tryParse(tempFilterInputData['distance']) ?? 10,
+            onChanged: (distance) {
+              _updateTempFindFilterData(context, 'distance', distance.toString());
+            },
+          ),
+          SelectField(
+            value: tempFilterInputData['looking_for'],
+            listItems: genderList,
+            labelText: context.lwTranslate.lookingFor,
+            onChanged: (String? value) {
+              _updateTempFindFilterData(context, 'looking_for', value);
+            },
+          ),
           InputField(
             initialValue: tempFilterInputData['name'],
             labelText: context.lwTranslate.name,
@@ -466,40 +495,7 @@ class _UsersListPageState extends State<UsersListPage>
               _updateTempFindFilterData(context, 'username', value);
             },
           ),
-          SelectField(
-            value: tempFilterInputData['looking_for'],
-            listItems: genderList,
-            labelText: context.lwTranslate.lookingFor,
-            onChanged: (String? value) {
-              _updateTempFindFilterData(context, 'looking_for', value);
-            },
-          ),
-          SelectField(
-            value: tempFilterInputData['min_age'],
-            listItems: basicFilterData['minAgeList'],
-            labelText: context.lwTranslate.minimumAge,
-            onChanged: (String? value) {
-              _updateTempFindFilterData(context, 'min_age', value);
-            },
-          ),
-          SelectField(
-            value: tempFilterInputData['max_age'],
-            listItems: basicFilterData['maxAgeList'],
-            labelText: context.lwTranslate.maximumAge,
-            onChanged: (String? value) {
-              _updateTempFindFilterData(context, 'max_age', value);
-            },
-          ),
-          InputField(
-            inputType: TextInputType.number,
-            initialValue: tempFilterInputData['distance'],
-            labelText: context.lwTranslate.distanceFromMyLocationDistanceUnit(
-                basicFilterData['distanceUnit']),
-            // prefixIcon: const Icon(Icons.person),
-            onChanged: (String? value) {
-              _updateTempFindFilterData(context, 'distance', value);
-            },
-          )
+
         ];
         List<Widget> filterPersonalChildren = <Widget>[];
         if (!specificationSelectedCount.containsKey('personal')) {

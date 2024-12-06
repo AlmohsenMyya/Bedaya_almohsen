@@ -278,7 +278,7 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
                             ),
                             // encounter
                             TabItem(
-                              icon: CupertinoIcons.bolt,
+                              icon: CupertinoIcons.house_fill,
                             ),
                             // my photos
                             TabItem(
