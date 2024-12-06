@@ -37,15 +37,15 @@ class ProfileImageUpdatePage extends StatelessWidget {
                     'profile_picture_url', data['data']['image_url']);
               },
             ),
-            UploadWidget(
-                label: context.lwTranslate.profileCoverPhoto,
-                uploadUrl: 'upload-cover-image',
-                placeholderNetworkImage: getAuthInfo('cover_picture_url'),
-                buttonLabel: 'Upload New Cover Photo',
-                onSuccess: (data) {
-                  auth.setUserInfo(
-                      'cover_picture_url', data['data']['image_url']);
-                }),
+            // UploadWidget(
+            //     label: context.lwTranslate.profileCoverPhoto,
+            //     uploadUrl: 'upload-cover-image',
+            //     placeholderNetworkImage: getAuthInfo('cover_picture_url'),
+            //     buttonLabel: 'Upload New Cover Photo',
+            //     onSuccess: (data) {
+            //       auth.setUserInfo(
+            //           'cover_picture_url', data['data']['image_url']);
+            //     }),
           ],
         ),
       ),

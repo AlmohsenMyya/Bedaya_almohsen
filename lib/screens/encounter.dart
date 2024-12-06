@@ -85,7 +85,8 @@ class EncounterPageState extends State<EncounterPage> {
                   children: [
                     AppCachedNetworkImage(
                       height: double.infinity,
-                      imageUrl: encounteredUserData['userCoverUrl'],
+                      imageUrl: encounteredUserData['userImageUrl'],
+                      // imageUrl: encounteredUserData['userCoverUrl'],
                     ),
                     // Positioned(
                     //   bottom: 10,
@@ -177,17 +178,18 @@ class EncounterPageState extends State<EncounterPage> {
               children: [
                 AppCachedNetworkImage(
                   height: double.infinity,
-                  imageUrl: encounteredUserData['userCoverUrl'],
+                  imageUrl: encounteredUserData['userImageUrl'],
+                  // imageUrl: encounteredUserData['userCoverUrl'],
                 ),
-                Positioned(
-                  bottom: 10,
-                  child: CircleAvatar(
-                    radius: 80,
-                    backgroundImage: appCachedNetworkImageProvider(
-                      imageUrl: encounteredUserData['userImageUrl'],
-                    ),
-                  ),
-                ),
+                // Positioned(
+                //   bottom: 10,
+                //   child: CircleAvatar(
+                //     radius: 80,
+                //     backgroundImage: appCachedNetworkImageProvider(
+                //       imageUrl: encounteredUserData['userImageUrl'],
+                //     ),
+                //   ),
+                // ),
                 if ((encounteredUserData['isPremiumUser'] != null) &&
                     encounteredUserData['isPremiumUser'])
                   const Positioned(

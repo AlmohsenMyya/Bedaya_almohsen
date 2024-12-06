@@ -464,46 +464,46 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                           child: Stack(
                             alignment: Alignment.bottomLeft,
                             children: [
-                              GestureDetector(
-                                onTap: () => navigatePage(
-                                  context,
-                                  ProfileImageView(
-                                    title: Text(localUserProfileItem[
-                                            "fullName"] ??
-                                        localUserProfileItem["userFullName"]),
-                                    imageUrl: localUserProfileItem[
-                                            'coverImage'] ??
-                                        localUserProfileItem['userCoverUrl'],
-                                    actions: !isOwnProfile
-                                        ? []
-                                        : [
-                                            IconButton(
-                                                icon: const Icon(Icons.edit),
-                                                tooltip: context.lwTranslate
-                                                    .uploadNewPhotos,
-                                                onPressed: () {
-                                                  navigatePage(
-                                                    context,
-                                                    const ProfileImageUpdatePage(),
-                                                  );
-                                                }),
-                                          ],
-                                  ),
-                                ),
-                                child: Hero(
-                                  tag: 'mainImage',
-                                  transitionOnUserGestures: true,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(4),
-                                    child: AppCachedNetworkImage(
-                                      imageUrl: localUserProfileItem[
-                                              'coverImage'] ??
-                                          localUserProfileItem['userCoverUrl'],
-                                      height: 150,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              // GestureDetector(
+                              //   onTap: () => navigatePage(
+                              //     context,
+                              //     ProfileImageView(
+                              //       title: Text(localUserProfileItem[
+                              //               "fullName"] ??
+                              //           localUserProfileItem["userFullName"]),
+                              //       imageUrl: localUserProfileItem[
+                              //               'coverImage'] ??
+                              //           localUserProfileItem['userCoverUrl'],
+                              //       actions: !isOwnProfile
+                              //           ? []
+                              //           : [
+                              //               IconButton(
+                              //                   icon: const Icon(Icons.edit),
+                              //                   tooltip: context.lwTranslate
+                              //                       .uploadNewPhotos,
+                              //                   onPressed: () {
+                              //                     navigatePage(
+                              //                       context,
+                              //                       const ProfileImageUpdatePage(),
+                              //                     );
+                              //                   }),
+                              //             ],
+                              //     ),
+                              //   ),
+                              //   child: Hero(
+                              //     tag: 'mainImage',
+                              //     transitionOnUserGestures: true,
+                              //     child: ClipRRect(
+                              //       borderRadius: BorderRadius.circular(4),
+                              //       child: AppCachedNetworkImage(
+                              //         imageUrl: localUserProfileItem[
+                              //                 'coverImage'] ??
+                              //             localUserProfileItem['userCoverUrl'],
+                              //         height: 150,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: GestureDetector(
@@ -557,7 +557,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                                 ),
                               Positioned(
                                 bottom: 10,
-                                right: 10,
+                                left: 10,
                                 child: Container(
                                   width: 14,
                                   height: 14,
@@ -575,7 +575,7 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                                     shape: BoxShape.circle,
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
