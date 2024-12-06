@@ -289,7 +289,7 @@ class _UsersListPageState extends State<UsersListPage>
                                         ProfileMatchingCircle(
                                           completionPercentage: double.tryParse(
                                               userItem['matchingPercentage']
-                                                  .toString())!,
+                                                  .toString())??0,
                                           size: 40, // ضع النسبة هنا (0-100)
                                           // حجم الدائرة
                                         ),
