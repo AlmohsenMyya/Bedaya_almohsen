@@ -272,7 +272,7 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage>
                   List<Widget> listOfItems = [];
                   for (var item in itemOptions) {
                     if ((!formInputData.containsKey(item['name']))) {
-                      formInputData[item['name']] = item['selected_options'];
+                      formInputData[item['name'].toString()] = item['selected_options'];
                     }
 
                     if (item['input_type'] == 'select') {

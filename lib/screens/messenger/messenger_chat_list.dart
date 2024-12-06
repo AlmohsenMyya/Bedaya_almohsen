@@ -6,6 +6,7 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:giphy_get/giphy_get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 import '../../common/services/auth.dart';
 import '../../common/services/data_transport.dart' as data_transport;
@@ -813,31 +814,33 @@ class _ChatListWidgetState extends State<ChatListWidget> {
       ),
     );
   }
-
   void pickAndUploadFile(context, url,
       {Function? onSuccess,
-      Function? thenCallback,
-      Function? onError,
-      Function? onStart,
-      FileType pickingType = FileType.image,
-      bool allowMultiple = false,
-      String? allowedExtensions = ''}) async {
+        Function? thenCallback,
+        Function? onError,
+        Function? onStart,
+        FileType pickingType = FileType.image,
+        bool allowMultiple = false,
+        String? allowedExtensions = ''}) async {
     try {
-      var paths = (await FilePicker.platform.pickFiles(
-        type: pickingType,
-        allowMultiple: allowMultiple,
-        allowedExtensions: (allowedExtensions?.isNotEmpty ?? false)
-            ? allowedExtensions?.replaceAll(' ', '').split(',')
-            : null,
-      ))
-          ?.files;
-      String uploadedImageName = paths?[0].path ?? '';
-      if ((uploadedImageName == '')) {
+      final ImagePicker picker = ImagePicker();
+      XFile? pickedFile = await picker.pickImage(
+        source: ImageSource.gallery,
+      );
+
+      if (pickedFile == null) {
         return;
       }
+
+      String uploadedImageName = pickedFile.path;
+      if (uploadedImageName.isEmpty) {
+        return;
+      }
+
       if (onStart != null) {
         onStart(uploadedImageName);
       }
+
       // blank loader container
       var randomNumberId = Random().nextInt(99999);
       setState(() {
@@ -853,13 +856,12 @@ class _ChatListWidgetState extends State<ChatListWidget> {
         );
       });
 
-      data_transport
-          .uploadFile(uploadedImageName, url, context: context, inputData: {
+      data_transport.uploadFile(uploadedImageName, url, context: context, inputData: {
         'type': '2',
         'unique_id': 'uni$randomNumberId',
       }, onError: (error) {
         if (onError != null) {
-          onError(e);
+          onError(error);
         }
       }, thenCallback: (data) {
         if (thenCallback != null) {
@@ -867,7 +869,7 @@ class _ChatListWidgetState extends State<ChatListWidget> {
         }
       }, onSuccess: (responseData) {
         Map foundChatItem = chatMessages.firstWhere((element) =>
-            (element?['temp_id'] != null) &&
+        (element?['temp_id'] != null) &&
             (element['temp_id'] == randomNumberId));
         setState(() {
           foundChatItem['temp_id'] = '';

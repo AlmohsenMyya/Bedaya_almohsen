@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'utils.dart';
 
@@ -35,30 +36,28 @@ class FilePickerProcessState extends State<FilePickerProcess> {
   void _pickFiles() async {
     _resetState();
     try {
-      _directoryPath = null;
-      _paths = (await FilePicker.platform.pickFiles(
-        type: _pickingType,
-        allowMultiple: _multiPick,
-        onFileLoading: (FilePickerStatus status) => print(status),
-        allowedExtensions: (_extension?.isNotEmpty ?? false)
-            ? _extension?.replaceAll(' ', '').split(',')
-            : null,
-      ))
-          ?.files;
+      final ImagePicker picker = ImagePicker();
+      XFile? pickedFile = await picker.pickImage(
+        source: ImageSource.gallery,
+      );
+
+      if (pickedFile == null) {
+        return;
+      }
+
+      String uploadedImageName = pickedFile.path;
+      setState(() {
+        _isLoading = false;
+        _fileName = uploadedImageName;
+        _userAborted = false;
+      });
     } on PlatformException catch (e) {
       _logException('Unsupported operation $e');
     } catch (e) {
       _logException(e.toString());
     }
     if (!mounted) return;
-    setState(() {
-      _isLoading = false;
-      _fileName =
-          _paths != null ? _paths!.map((e) => e.name).toString() : '...';
-      _userAborted = _paths == null;
-    });
   }
-
   void _clearCachedFiles() async {
     _resetState();
     try {
