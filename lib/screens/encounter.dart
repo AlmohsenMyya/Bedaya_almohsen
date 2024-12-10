@@ -427,15 +427,15 @@ class EncounterPageState extends State<EncounterPage> {
                                       style: BorderStyle.solid),
                                   borderRadius: BorderRadius.circular(50),
                                 ),
-                                color: Colors.green[100],
+                                color: Colors.black,
                                 child: InkWell(
                                   splashColor: Colors.white,
                                   child: const SizedBox(
                                       width: 37,
                                       height: 37,
                                       child: Icon(
-                                        Icons.chevron_right,
-                                        color: Colors.black,
+                                        CupertinoIcons.heart_circle_fill,
+                                        color: Colors.green,
                                         size: 30,
                                       )),
                                   onTap: () {
@@ -450,19 +450,20 @@ class EncounterPageState extends State<EncounterPage> {
                                 ),
                               ),
                             ),
-                            farLeftButtonIcon: Icons.chevron_left,
+                            farLeftButtonIcon: CupertinoIcons.heart_slash_circle_fill,
                             farRightButtonIcon: Icons.lan_rounded,
                             farLeftButtonAction: () {
-                              print(
-                                  "dfdfd previousProfiles.isNotEmpty ${previousProfiles.isNotEmpty} && isSkiped  ${isSkiped}");
-                              if (previousProfiles.isNotEmpty && isSkiped) {
-                                navigateToPreviousProfile();
-                              }
+                              loadNextUser();
+                              data_transport.post(
+                                  "encounters/${encounteredUserData['_uid']}/2/user-encounter-like-dislike",
+                                  context: context, onSuccess: (responseData) {
+                                // loadNextUser(); // تحميل المستخدم التالي
+                              });
                             },
                             farRightButtonAction: () {
                               loadNextUser();
                               data_transport.post(
-                                  "encounters/${encounteredUserData['_uid']}/skip-encounter-user",
+                                  "encounters/${encounteredUserData['_uid']}/1/user-encounter-like-dislike",
                                   context: context, onSuccess: (responseData) {
                                 // loadNextUser(); // تحميل المستخدم التالي
                               });
@@ -472,8 +473,8 @@ class EncounterPageState extends State<EncounterPage> {
                             showLoading: true,
                             hideCenterButton: false,
                             leftButtonIcon:
-                                CupertinoIcons.heart_slash_circle_fill,
-                            rightButtonIcon: CupertinoIcons.heart_circle_fill,
+                                CupertinoIcons.chevron_left_circle_fill,
+                            rightButtonIcon: CupertinoIcons.chevron_right_circle_fill,
                             centerButtonIcon: Icons.message,
                             onCardTap: (params) {
                               navigatePage(
@@ -539,18 +540,17 @@ class EncounterPageState extends State<EncounterPage> {
                             rightButtonAction: () {
                               loadNextUser();
                               data_transport.post(
-                                  "encounters/${encounteredUserData['_uid']}/1/user-encounter-like-dislike",
-                                  context: context, onSuccess: (responseData) {
-                                // loadNextUser(); // تحميل المستخدم التالي
-                              });
+                                  "encounters/${encounteredUserData['_uid']}/skip-encounter-user",
+                                  context: context,
+                                  onSuccess: (responseData) {
+                                    // loadNextUser(); // تحميل المستخدم التالي
+                                  });
+
                             },
                             leftButtonAction: () {
-                              loadNextUser();
-                              data_transport.post(
-                                  "encounters/${encounteredUserData['_uid']}/2/user-encounter-like-dislike",
-                                  context: context, onSuccess: (responseData) {
-                                // loadNextUser(); // تحميل المستخدم التالي
-                              });
+                              if (previousProfiles.isNotEmpty && isSkiped) {
+                                navigateToPreviousProfile();
+                              }
                             },
                           ),
                         ),
