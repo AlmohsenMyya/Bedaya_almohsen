@@ -143,7 +143,7 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 20.0,
+                    height: 0.0,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -203,21 +203,21 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
                     ],
                   ),
                   SizedBox(
-                    height: 20.0,
+                    height: 0.0,
                   ),
                   Visibility(
                     visible: !widget.hideTitleText,
                     child: PhotoTitleWidget(photoCard: widget.photoCard),
                   ),
                   SizedBox(
-                    height: 5.0,
+                    height: 0.0,
                   ),
                   Visibility(
                     visible: !widget.hideDescriptionText,
                     child: PhotoDescriptionWidget(photoCard: widget.photoCard),
                   ),
                   SizedBox(
-                    height: 20.0,
+                    height: 0.0,
                   ),
                 ],
               ),
@@ -502,7 +502,7 @@ class FarLeftButtonWidget extends StatelessWidget {
               height: 37,
               child: Icon(
                 leftButtonIcon ?? Icons.close,
-                color: leftButtonIconColor ?? Colors.red[800],
+                color: leftButtonIconColor ?? Colors.black,
                 size: 30,
               )),
           onTap: () {

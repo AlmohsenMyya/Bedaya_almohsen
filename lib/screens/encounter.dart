@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_card_swiper/models/photo_card.dart';
 import 'package:photo_card_swiper/photo_card_swiper.dart';
+import '../common/services/auth.dart';
 import '../common/services/data_transport.dart' as data_transport;
 import '../common/services/utils.dart';
 import '../common/widgets/common.dart';
+import 'messenger/messenger_chat_list.dart';
 import 'profile_details.dart';
 import 'user_common.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -25,12 +27,160 @@ class EncounterPageState extends State<EncounterPage> {
   bool encounterAvailability = false;
   List<PhotoCard> encounterCards = [];
   List<Map> previousProfiles = []; // Stack to store previous profiles
+  var userQueue = []; // قائمة الانتظار
+  int maxQueueSize = 5; // الحد الأقصى لعدد المستخدمين في القائمة
+  void fetchEncounterQueue() async {
+    print("debug queue ... start");
+    if (userQueue.length < maxQueueSize) {
+      print("debug queue ... current length: ${userQueue.length}");
+      data_transport.get(
+        'encounter-data',
+        context: context,
+        onSuccess: (responseData) {
+          var usersData = getItemValue(responseData, 'data.randomUserData',
+              fallbackValue: {});
+          print("debug queue ---** $usersData");
+
+          setState(() {
+            if (usersData is List && usersData.isNotEmpty) {
+              // إذا كانت البيانات قائمة، أضفها إلى قائمة الانتظار
+              userQueue.addAll(usersData
+                  .where((user) => user is Map)
+                  .cast<Map<dynamic, dynamic>>());
+            } else if (usersData is Map && usersData.isNotEmpty) {
+              // إذا كانت البيانات عنصرًا مفردًا، أضفه إلى قائمة الانتظار
+              userQueue.add(usersData);
+            }
+
+            print("debug queue length  ${userQueue.length}");
+
+            // استدعاء الوظيفة مجددًا إذا لم يصل طول القائمة إلى maxQueueSize
+            if (userQueue.length < maxQueueSize) {
+              fetchEncounterQueue();
+            }
+          });
+        },
+      );
+    }
+  }
+
+  void loadNextUser() {
+    print("debug queue ... loadNextUser ${userQueue.isNotEmpty}");
+    if (userQueue.isNotEmpty) {
+      print("debug queue ... start length ${userQueue.length}");
+      setState(() {
+        isSkiped = true;
+        if (encounteredUserData.isNotEmpty) {
+          previousProfiles
+              .add(encounteredUserData); // Add current profile to stack
+        }
+        encounteredUserData = userQueue.removeLast(); // استرجاع المستخدم الأول
+
+        print("debug queue ... end length ${userQueue.length}");
+        encounterCards = [
+          PhotoCard(
+            cardId: encounteredUserData['_uid'],
+            description: Column(
+              children: [
+                Text(
+                  encounteredUserData['userFullName'],
+                  style: const TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+                const Divider(
+                  height: 10,
+                ),
+                Text(encounteredUserData['detailString'] ?? ''),
+                Text(encounteredUserData['countryName'] ?? ''),
+              ],
+            ),
+            itemWidget: Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                // Container(color: Colors.red,),
+                AppCachedNetworkImage(
+                  height: double.infinity,
+                  imageUrl: encounteredUserData['userImageUrl'],
+                  // imageUrl: encounteredUserData['userCoverUrl'],
+                ),
+                // Positioned(
+                //   bottom: 10,
+                //   child: CircleAvatar(
+                //     radius: 80,
+                //     backgroundImage: appCachedNetworkImageProvider(
+                //       imageUrl: encounteredUserData['userImageUrl'],
+                //     ),
+                //   ),
+                // ),
+                Positioned(
+                    top: 10,
+                    right: 10,
+                    child: Container(
+                      width: 60, // حجم الخلفية أكبر قليلاً من الدائرة
+                      height: 60,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.black38.withOpacity(0.5), // لون أبيض شفاف
+                      ),
+                    )),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: ProfileMatchingCircle(
+                    completionPercentage: double.tryParse(
+                        encounteredUserData['matchingPercentage'].toString())!,
+                    size: 60, // ضع النسبة هنا (0-100)
+                    noPadding: true,
+                    // حجم الدائرة
+                  ),
+                ),
+                if ((encounteredUserData['isPremiumUser'] != null) &&
+                    encounteredUserData['isPremiumUser'])
+                  const Positioned(
+                    top: 10,
+                    right: 10,
+                    child: PremiumBadgeWidget(),
+                  ),
+                Positioned(
+                  top: 10,
+                  left: 10,
+                  child: Container(
+                    width: 14,
+                    height: 14,
+                    decoration: BoxDecoration(
+                      color: ((encounteredUserData['userOnlineStatus'] == 1)
+                          ? Colors.green
+                          : (encounteredUserData['userOnlineStatus'] == 2
+                              ? Colors.orange
+                              : Colors.red)),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            isLocalImage: false,
+          ),
+        ];
+      });
+      print("debug queue --- ok ?");
+      // تحميل المزيد من البيانات إذا اقتربت قائمة الانتظار من النفاد
+      if (userQueue.length < maxQueueSize ~/ 2) {
+        fetchEncounterQueue();
+      }
+    } else {
+      // إذا لم يكن هناك بيانات، قم بتحميل المزيد
+      fetchEncounterQueue();
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     if (mounted) {
-      getEncounterData();
+      fetchEncounterQueue(); // تحميل قائمة الانتظار
+      getEncounterData(); // تحميل البيانات الحالية
     }
   }
 
@@ -97,15 +247,18 @@ class EncounterPageState extends State<EncounterPage> {
                     //     ),
                     //   ),
                     // ),
-                    Positioned(                      top: 10,
-                        right: 10, child:     Container(
-                      width: 60, // حجم الخلفية أكبر قليلاً من الدائرة
-                      height: 60,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.black38.withOpacity(0.5), // لون أبيض شفاف
-                      ),
-                    )),
+                    Positioned(
+                        top: 10,
+                        right: 10,
+                        child: Container(
+                          width: 60, // حجم الخلفية أكبر قليلاً من الدائرة
+                          height: 60,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.black38
+                                .withOpacity(0.5), // لون أبيض شفاف
+                          ),
+                        )),
                     Positioned(
                       top: 10,
                       right: 10,
@@ -192,6 +345,28 @@ class EncounterPageState extends State<EncounterPage> {
                 //     ),
                 //   ),
                 // ),
+                Positioned(
+                    top: 10,
+                    right: 10,
+                    child: Container(
+                      width: 60, // حجم الخلفية أكبر قليلاً من الدائرة
+                      height: 60,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.black38.withOpacity(0.5), // لون أبيض شفاف
+                      ),
+                    )),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: ProfileMatchingCircle(
+                    completionPercentage: double.tryParse(
+                        encounteredUserData['matchingPercentage'].toString())!,
+                    size: 60, // ضع النسبة هنا (0-100)
+                    noPadding: true,
+                    // حجم الدائرة
+                  ),
+                ),
                 if ((encounteredUserData['isPremiumUser'] != null) &&
                     encounteredUserData['isPremiumUser'])
                   const Positioned(
@@ -243,25 +418,55 @@ class EncounterPageState extends State<EncounterPage> {
                       children: [
                         SizedBox.expand(
                           child: PhotoCardSwiper(
-                            farRightWidget:
-                            ProfileMatchingCircle(
-                                  completionPercentage: double.tryParse(
-                                      encounteredUserData['matchingPercentage']
-                                          .toString())!,
-                                  size: 30, // ضع النسبة هنا (0-100)
-                              noPadding: true,
-                                  // حجم الدائرة
-                                )
-                            ,
+                            farRightWidget: ClipOval(
+                              child: Material(
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      color: Colors.grey[200] ?? Colors.grey,
+                                      width: 3,
+                                      style: BorderStyle.solid),
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                color: Colors.green[100],
+                                child: InkWell(
+                                  splashColor: Colors.white,
+                                  child: const SizedBox(
+                                      width: 37,
+                                      height: 37,
+                                      child: Icon(
+                                        Icons.chevron_right,
+                                        color: Colors.black,
+                                        size: 30,
+                                      )),
+                                  onTap: () {
+                                    loadNextUser();
+                                    data_transport.post(
+                                        "encounters/${encounteredUserData['_uid']}/skip-encounter-user",
+                                        context: context,
+                                        onSuccess: (responseData) {
+                                      // loadNextUser(); // تحميل المستخدم التالي
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
                             farLeftButtonIcon: Icons.chevron_left,
                             farRightButtonIcon: Icons.lan_rounded,
                             farLeftButtonAction: () {
+                              print(
+                                  "dfdfd previousProfiles.isNotEmpty ${previousProfiles.isNotEmpty} && isSkiped  ${isSkiped}");
                               if (previousProfiles.isNotEmpty && isSkiped) {
-
-                                            navigateToPreviousProfile();
+                                navigateToPreviousProfile();
                               }
                             },
-                            farRightButtonAction: () {},
+                            farRightButtonAction: () {
+                              loadNextUser();
+                              data_transport.post(
+                                  "encounters/${encounteredUserData['_uid']}/skip-encounter-user",
+                                  context: context, onSuccess: (responseData) {
+                                // loadNextUser(); // تحميل المستخدم التالي
+                              });
+                            },
                             cardBgColor: const Color.fromARGB(100, 0, 0, 0),
                             photos: encounterCards,
                             showLoading: true,
@@ -269,7 +474,7 @@ class EncounterPageState extends State<EncounterPage> {
                             leftButtonIcon:
                                 CupertinoIcons.heart_slash_circle_fill,
                             rightButtonIcon: CupertinoIcons.heart_circle_fill,
-                            centerButtonIcon: Icons.chevron_right,
+                            centerButtonIcon: Icons.message,
                             onCardTap: (params) {
                               navigatePage(
                                   context,
@@ -291,26 +496,60 @@ class EncounterPageState extends State<EncounterPage> {
                                 (CardActionDirection direction, int index) {
                               if (direction ==
                                   CardActionDirection.cardCenterAction) {
-                                data_transport.post(
-                                    "encounters/${encounteredUserData['_uid']}/skip-encounter-user",
-                                    context: context,
-                                    onSuccess: (responseData) {
-                                  getEncounterData();
-                                });
+                                !userInfo['is_premium']
+                                    ? showDialog(
+                                        barrierDismissible: true,
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return Container(
+                                              color: Colors.black,
+                                              child: BePremiumAlertInfo());
+                                        },
+                                      )
+                                    : navigatePage(
+                                        context,
+                                        MessengerChatListPage(
+                                          sourceElement: {
+                                            'user_full_name':
+                                                encounteredUserData[
+                                                        'fullName'] ??
+                                                    encounteredUserData[
+                                                        'userFullName'],
+                                            'username':
+                                                encounteredUserData['username'],
+                                            'profile_picture':
+                                                encounteredUserData[
+                                                        'profileImage'] ??
+                                                    encounteredUserData[
+                                                        'userImageUrl'],
+                                            'cover_photo': encounteredUserData[
+                                                    'coverImage'] ??
+                                                encounteredUserData[
+                                                    'userCoverUrl'],
+                                            'user_id': encounteredUserData[
+                                                    'id'] ??
+                                                encounteredUserData['_id'] ??
+                                                encounteredUserData['user_id'],
+                                          },
+                                        ),
+                                      );
+                                setState(() {});
                               }
                             },
                             rightButtonAction: () {
+                              loadNextUser();
                               data_transport.post(
                                   "encounters/${encounteredUserData['_uid']}/1/user-encounter-like-dislike",
                                   context: context, onSuccess: (responseData) {
-                                getEncounterData();
+                                // loadNextUser(); // تحميل المستخدم التالي
                               });
                             },
                             leftButtonAction: () {
+                              loadNextUser();
                               data_transport.post(
                                   "encounters/${encounteredUserData['_uid']}/2/user-encounter-like-dislike",
                                   context: context, onSuccess: (responseData) {
-                                getEncounterData();
+                                // loadNextUser(); // تحميل المستخدم التالي
                               });
                             },
                           ),
