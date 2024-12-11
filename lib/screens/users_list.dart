@@ -11,6 +11,7 @@ import '../common/services/data_transport.dart' as data_transport;
 import 'package:animations/animations.dart';
 import 'profile_details.dart';
 import 'user_common.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class UsersListPage extends StatefulWidget {
   const UsersListPage({
@@ -49,7 +50,23 @@ class _UsersListPageState extends State<UsersListPage>
   String? userRequestType;
 
   List<String> premiumOnly = [];
+  String formatCreatedAt(String? createdAt) {
+    if (createdAt == null || createdAt.isEmpty) return 'Unknown';
 
+    // تحقق إذا كان النص يحتوي على كلمات (مثل "days ago")
+    final regex = RegExp(r'\b(days|hours|minutes|seconds|ago)\b');
+    if (regex.hasMatch(createdAt)) {
+      return createdAt; // النص جاهز بالفعل
+    }
+
+    // حاول تحويل النص إلى DateTime
+    try {
+      final dateTime = DateTime.parse(createdAt);
+      return timeago.format(dateTime); // تحويل إلى صيغة نسبية
+    } catch (e) {
+      return 'Unknown'; // في حال فشل التحليل
+    }
+  }
   @override
   void dispose() {
     if (mounted) {
@@ -350,9 +367,7 @@ class _UsersListPageState extends State<UsersListPage>
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.all(8.0),
-                                                  child: Text(
-                                                    userItem['created_at'] ??
-                                                        '',
+                                                  child: Text(formatCreatedAt(userItem['created_at']),
                                                     style: const TextStyle(
                                                         fontSize: 11),
                                                   ),
