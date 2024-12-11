@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
                   return MaterialApp(
                     title: 'Loveria',
                     theme: ThemeData(
-                      fontFamily: 'Fuzzy_Bubbles',
+                      // fontFamily: 'Fuzzy_Bubbles',
                       // This is the theme of your application.
                       //
                       // Try running your application with "flutter run". You'll see the
