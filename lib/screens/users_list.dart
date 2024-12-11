@@ -447,11 +447,11 @@ class _UsersListPageState extends State<UsersListPage>
         late final TabController tabController;
         List<Widget> filterTabs = [
           Tab(
-            text: context.lwTranslate.basic,
+            text: "📒 ${context.lwTranslate.basic}",
           ),
           Tab(
             child: _badgeCount(
-                context, 'personal', {'title': context.lwTranslate.personal}),
+                context, 'personal', {'title': "ℹ️ ${context.lwTranslate.personal}"}),
           ),
         ];
         tempFilterInputData['name'] =
