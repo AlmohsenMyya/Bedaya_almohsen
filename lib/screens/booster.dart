@@ -1,3 +1,4 @@
+import 'package:confetti/confetti.dart';
 import 'package:custom_timer/custom_timer.dart';
 import 'package:fbroadcast/fbroadcast.dart';
 import 'package:flutter/material.dart';
@@ -27,8 +28,12 @@ class BoosterPageState extends State<BoosterPage>
   int remainingBoosterTime = 0;
   late CustomTimerController _customTimerController;
   int? creditsRemaining;
+  late ConfettiController _confettiController;
+
   @override
   void initState() {
+    _confettiController =
+        ConfettiController(duration: const Duration(seconds: 3));
     if (mounted) {
       _customTimerController = CustomTimerController(
         vsync: this,
@@ -83,12 +88,21 @@ class BoosterPageState extends State<BoosterPage>
 
   @override
   void dispose() {
+    _confettiController.dispose();
     if (mounted) {
       _customTimerController.dispose();
       // remove all receivers from the environment
       FBroadcast.instance().unregister(this);
     }
     super.dispose();
+  }
+
+  void _activateSuperMode() {
+    // قم بتشغيل تأثير الاحتفال
+    _confettiController.play();
+
+    // هنا يمكنك إضافة المنطق الخاص بتفعيل وضع السوبر
+    print("Super Mode Activated!");
   }
 
   @override
@@ -106,6 +120,21 @@ class BoosterPageState extends State<BoosterPage>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // تأثير الاحتفال
+                  ConfettiWidget(
+                    confettiController: _confettiController,
+                    blastDirectionality: BlastDirectionality.explosive,
+
+                    shouldLoop: false,
+                    colors: const [
+                      Colors.red,
+                      Colors.blue,
+                      Colors.yellow,
+                      Colors.green,
+                      Colors.purple
+                    ],
+                    numberOfParticles: 20,
+                  ),
                   if (remainingBoosterTime > 0)
                     Column(
                       children: [
@@ -148,53 +177,59 @@ class BoosterPageState extends State<BoosterPage>
                   if (isCountUpdating)
                     const AppItemProgressIndicator()
                   else
-                    ElevatedButton(
-                      onPressed: (() {
-                        data_transport.post(
-                          'boost-profile',
-                          thenCallback: (responseData) {
-                            if (getItemValue(responseData, 'reaction') == 2) {
-                              setState(() {
-                                creditsRemaining = getItemValue(
-                                    responseData, 'data.creditsRemaining',
-                                    fallbackValue: '');
-                              });
-                              showToastMessage(
-                                context,
-                                getItemValue(
-                                  responseData,
-                                  'data.message',
-                                  fallbackValue: '',
-                                ),
-                                type: 'error',
+                    Stack(alignment: Alignment.center, children: [
+
+                      //
+                      ElevatedButton(
+                        onPressed: (() {
+                          data_transport.post(
+                            'boost-profile',
+                            thenCallback: (responseData) {
+                              if (getItemValue(responseData, 'reaction') == 2) {
+                                setState(() {
+                                  creditsRemaining = getItemValue(
+                                      responseData, 'data.creditsRemaining',
+                                      fallbackValue: '');
+                                });
+                                showToastMessage(
+                                  context,
+                                  getItemValue(
+                                    responseData,
+                                    'data.message',
+                                    fallbackValue: '',
+                                  ),
+                                  type: 'error',
+                                );
+                              }
+                            },
+                            onSuccess: (responseData) async {
+                              _activateSuperMode();
+                              FBroadcast.instance().broadcast(
+                                "local.broadcast.credits_update",
+                                value: {},
                               );
-                            }
-                          },
-                          onSuccess: (responseData) async {
-                            FBroadcast.instance().broadcast(
-                              "local.broadcast.credits_update",
-                              value: {},
-                            );
-                            await getBoosterInfo();
-                          },
-                        );
-                      }),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              (remainingBoosterTime > 0)
-                                  ? context.lwTranslate.boostAgain
-                                  : context.lwTranslate.boostMyProfile,
-                              style: const TextStyle(
-                                fontSize: 28,
+                              await getBoosterInfo();
+                            },
+                          );
+                        }),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                (remainingBoosterTime > 0)
+                                    ? context.lwTranslate.boostAgain
+                                    : context.lwTranslate.boostMyProfile,
+                                style: const TextStyle(
+                                  fontSize: 28,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
+
+                    ]),
                   if (creditsRemaining != null && creditsRemaining! <= 0)
                     Padding(
                       padding: const EdgeInsets.all(8.0),
