@@ -476,6 +476,101 @@ class _UsersListPageState extends State<UsersListPage>
           SizedBox(
             height: 20,
           ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: Row(
+                  children: [
+                    const Icon(
+                      Icons.online_prediction,
+                      // color: Theme.of(context).primaryColor,
+                    ),
+                    Text(
+                      context.lwTranslate.menuOnlineUsers,
+                      style: const TextStyle(
+                        // color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10),
+                    ),
+                  ],
+                ),
+
+                onPressed: () {
+                  // Then close the drawer
+                  Navigator.pop(context);
+                  navigatePage(
+                      context,
+                      UsersListPage(
+                        title: context.lwTranslate.menuOnlineUsers,
+                        pageBaseUrl: 'random-user/online',
+                      ));
+                },
+              ),
+              // newest
+              IconButton(
+                icon: Row(
+                  children: [
+                    const Icon(
+                      Icons.fiber_new,
+                      // color: Theme.of(context).primaryColor,
+                    ),
+                    Text(
+                      context.lwTranslate.menuNewestUsers,
+                      style: const TextStyle(
+                        // color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10),
+                    ),
+                  ],
+                ),
+
+                onPressed: () {
+                  // Then close the drawer
+                  Navigator.pop(context);
+                  navigatePage(
+                      context,
+                      UsersListPage(
+                        title: context.lwTranslate.menuNewestUsers,
+                        pageBaseUrl: 'random-user/newest',
+                      ));
+                },
+              ),
+              //nearest
+              IconButton(
+                icon: Row(
+                  children: [
+                    const Icon(
+                      Icons.location_on_outlined,
+                      // color: Theme.of(context).primaryColor,
+                    ),
+                    Text(
+                      context.lwTranslate.menuNearestUsers,
+                      style: const TextStyle(
+                        // color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10),
+                    ),
+                  ],
+                ),
+
+                onPressed: () {
+                  // Then close the drawer
+                  Navigator.pop(context);
+                  navigatePage(
+                      context,
+                      UsersListPage(
+                        title: context.lwTranslate.menuNearestUsers,
+                        pageBaseUrl: 'random-user/nearby',
+                      ));
+                },
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
           AgeSlider(
             labelText: context.lwTranslate.minimumAge,
             initialMinAge: int.tryParse(tempFilterInputData['min_age']) ?? 18,
