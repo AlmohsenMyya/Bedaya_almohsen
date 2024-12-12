@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:confetti/confetti.dart';
 import 'package:custom_timer/custom_timer.dart';
 import 'package:fbroadcast/fbroadcast.dart';
@@ -98,12 +99,17 @@ class BoosterPageState extends State<BoosterPage>
   }
 
   void _activateSuperMode() {
-    // قم بتشغيل تأثير الاحتفال
+    // تشغيل تأثير الاحتفال
     _confettiController.play();
 
-    // هنا يمكنك إضافة المنطق الخاص بتفعيل وضع السوبر
+    // تشغيل الصوت
+    final player = AudioPlayer();
+    player.play(AssetSource('audio/celebration.mp3'));
+
+    // إضافة منطق تفعيل وضع السوبر
     print("Super Mode Activated!");
   }
+
 
   @override
   Widget build(BuildContext context) {

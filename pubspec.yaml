@@ -126,6 +126,8 @@ flutter:
     - assets/images/bgs/bg2.jpg
     - assets/audio/caller-ringtone.mp3
     - assets/audio/receiver-ringtone.mp3
+    - assets/audio/celebration.mp3
+
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware
     # For details regarding adding assets from package dependencies, see
