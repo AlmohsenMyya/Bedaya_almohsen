@@ -1037,6 +1037,7 @@ class _UsersListPageState extends State<UsersListPage>
               ), // AppBar
               body: TabBarView(
                 controller: tabController,
+                physics: (!userInfo['is_premium']) ? NeverScrollableScrollPhysics() : ScrollPhysics() ,
                 children: filterTabViews,
               ), // TabBarView
             ), // DefaultTabController
