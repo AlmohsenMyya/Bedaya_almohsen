@@ -98,6 +98,7 @@ Future get(
         failedCallbackAction: onFailed);
     return value;
   }).catchError((error) {
+    print("get result --d--error  $error");
     if ((context != null) && (app_config.debug == true)) {
       showToastMessage(context, error.toString(), type: 'error');
     }
@@ -105,7 +106,7 @@ Future get(
         failedCallbackAction: onFailed);
     return error;
   });
-  print("get result ---- ${httpResponse.statusCode} --- body ${httpResponse.body}");
+  print("get result --d-- ${httpResponse.statusCode} --- body ${httpResponse.body}");
   return httpResponse.body;
 }
 

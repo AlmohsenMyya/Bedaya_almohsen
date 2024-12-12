@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:badges/badges.dart' as badges;
 import 'package:bedaya/screens/sliders_age_distance.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,11 +47,67 @@ class _UsersListPageState extends State<UsersListPage>
   Map<String, dynamic> tempFilterInputData = {};
   Map<String, num> specificationSelectedCount = {};
   Map genderList = {};
+  Map<String, String> countryList = {"0":"All"};
   bool isRequestProcessing = false;
   bool isInitialRequestProcessed = false;
   String? userRequestType;
 
   List<String> premiumOnly = [];
+
+
+  Future<void> fetchCountries() async {
+    await data_transport
+        .get('get-static-countries', queryParameters: tempFilterInputData)
+        .then((reciv00) {
+      // طباعة نوع وقيمة الاستجابة للتحقق
+      print('country filter --- ${reciv00.runtimeType} $reciv00');
+
+      // تحقق إذا كانت الاستجابة نصية
+      if (reciv00 is String) {
+        try {
+          // تحويل النص إلى كائن Dart
+          reciv00 = jsonDecode(reciv00);
+        } catch (e) {
+          print('Error decoding JSON: $e');
+          return; // إنهاء الدالة إذا فشل التحليل
+        }
+      }
+
+      // التحقق من أن `reciv00` هو قائمة
+      if (reciv00 is List) {
+        for (var country in reciv00) {
+          if (country['id'] != null && country['name'] != null) {
+            // إضافة القيم إلى countryList مع التأكد من عدم التكرار
+            countryList[country['id'].toString()] = country['name'];
+          }
+        }
+      } else {
+        print('Unexpected response structure: $reciv00');
+        return; // إنهاء الدالة إذا كانت البنية غير متوقعة
+      }
+
+      // إزالة القيم المكررة
+      countryList = Map<String, String>.fromEntries(
+        countryList.entries.toSet(),
+      );
+
+      // إضافة الخيار الافتراضي "all"
+      if (!countryList.containsKey('0')) {
+        countryList['0'] = 'All';
+      }
+
+      // التحقق من أن القيمة الافتراضية موجودة
+      if (!countryList.containsKey(tempFilterInputData['country_filter'])) {
+        tempFilterInputData['country_filter'] = '0';
+      }
+
+      // تحديث الواجهة
+      setState(() {});
+    }).catchError((error) {
+      // معالجة الأخطاء أثناء استدعاء البيانات
+      print('Error fetching countries: $error');
+    });
+  }
 
   String formatCreatedAt(String? createdAt) {
     if (createdAt == null || createdAt.isEmpty) return 'Unknown';
@@ -81,6 +139,7 @@ class _UsersListPageState extends State<UsersListPage>
   @override
   void didChangeDependencies() {
     genderList['all'] = context.lwTranslate.all;
+    // countryList['all'] = 'all';
     super.didChangeDependencies();
   }
 
@@ -95,12 +154,13 @@ class _UsersListPageState extends State<UsersListPage>
     }
   }
 
-  applyFiltersAnLoadSearchResult() {
+  applyFiltersAnLoadSearchResult()async {
     setState(() {
       items = [];
       totalCount = 0;
       isRequestProcessing = true;
     });
+   await fetchCountries();
     data_transport
         .get(widget.pageBaseUrl, queryParameters: tempFilterInputData)
         .then((dataReceived) {
@@ -117,6 +177,15 @@ class _UsersListPageState extends State<UsersListPage>
         if (basicFilterData['genderList'] != null) {
           genderList.addAll(basicFilterData['genderList']);
         }
+// 3. إضافة بيانات إضافية إلى قائمة الدول إذا كانت موجودة مسبقًا
+        if (basicFilterData['countryList'] != null) {
+          Map<String, String> basicCountries = {};
+          basicFilterData['countryList'].forEach((key, value) {
+            basicCountries[key.toString()] = value.toString();
+          });
+          countryList.addAll(basicCountries);
+        }
+
         isRequestProcessing = false;
         isInitialRequestProcessed = true;
         userRequestType = getItemValue(dataReceived, 'data.userRequestType');
@@ -466,12 +535,17 @@ class _UsersListPageState extends State<UsersListPage>
             : '';
         tempFilterInputData['looking_for'] =
             basicFilterData['looking_for'].toString();
+// 4. تحديث قيمة "country_filter"
+        tempFilterInputData['country_filter'] =
+            basicFilterData['country_filter']?.toString() ?? '0';
+
         tempFilterInputData['min_age'] = basicFilterData['min_age'].toString();
         tempFilterInputData['max_age'] = basicFilterData['max_age'].toString();
         tempFilterInputData['distance'] = (basicFilterData['distance'] != null)
             ? basicFilterData['distance']
             : '';
-
+        print(
+            "        tempFilterInputData['country_filter']${tempFilterInputData['country_filter']} $countryList");
         List<Widget> filterChildren = <Widget>[
           SizedBox(
             height: 20,
@@ -490,13 +564,12 @@ class _UsersListPageState extends State<UsersListPage>
                     Text(
                       context.lwTranslate.menuOnlineUsers,
                       style: const TextStyle(
-                        // color: Theme.of(context).primaryColor,
+                          // color: Theme.of(context).primaryColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 10),
                     ),
                   ],
                 ),
-
                 onPressed: () {
                   // Then close the drawer
                   Navigator.pop(context);
@@ -519,13 +592,12 @@ class _UsersListPageState extends State<UsersListPage>
                     Text(
                       context.lwTranslate.menuNewestUsers,
                       style: const TextStyle(
-                        // color: Theme.of(context).primaryColor,
+                          // color: Theme.of(context).primaryColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 10),
                     ),
                   ],
                 ),
-
                 onPressed: () {
                   // Then close the drawer
                   Navigator.pop(context);
@@ -548,13 +620,12 @@ class _UsersListPageState extends State<UsersListPage>
                     Text(
                       context.lwTranslate.menuNearestUsers,
                       style: const TextStyle(
-                        // color: Theme.of(context).primaryColor,
+                          // color: Theme.of(context).primaryColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 10),
                     ),
                   ],
                 ),
-
                 onPressed: () {
                   // Then close the drawer
                   Navigator.pop(context);
@@ -595,9 +666,36 @@ class _UsersListPageState extends State<UsersListPage>
             listItems: genderList,
             labelText: context.lwTranslate.lookingFor,
             onChanged: (String? value) {
+              print("jkn kn njn $countryList");
               _updateTempFindFilterData(context, 'looking_for', value);
             },
           ),
+          SizedBox(height: 10,),
+          DropdownButtonFormField<String>(
+            value: countryList.containsKey(tempFilterInputData['country_filter'])
+                ? tempFilterInputData['country_filter']
+                : countryList.keys.first,
+            items: countryList.entries.map((entry) {
+              return DropdownMenuItem<String>(
+                value: entry.key,
+                child: Text(
+                  entry.value,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              );
+            }).toList(),
+            onChanged: (String? value) {
+              if (value != null) {
+                _updateTempFindFilterData(context, 'country_filter', value);
+              }
+            },
+            decoration: InputDecoration(
+              labelText: 'Country Filter',
+              border: OutlineInputBorder(),
+            ),
+          ),
+
+
           InputField(
             initialValue: tempFilterInputData['name'],
             labelText: context.lwTranslate.name,
@@ -981,6 +1079,7 @@ class _UsersListPageState extends State<UsersListPage>
                             'username': '',
                             'distance': '',
                             'looking_for': 'all',
+                            'country_filter': '0',
                             'min_age': basicFilterData['minAgeList'].first,
                             'max_age': basicFilterData['maxAgeList'].last,
                           };
@@ -1037,7 +1136,9 @@ class _UsersListPageState extends State<UsersListPage>
               ), // AppBar
               body: TabBarView(
                 controller: tabController,
-                physics: (!userInfo['is_premium']) ? NeverScrollableScrollPhysics() : ScrollPhysics() ,
+                physics: (!userInfo['is_premium'])
+                    ? NeverScrollableScrollPhysics()
+                    : ScrollPhysics(),
                 children: filterTabViews,
               ), // TabBarView
             ), // DefaultTabController
