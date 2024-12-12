@@ -50,6 +50,7 @@ class _UsersListPageState extends State<UsersListPage>
   String? userRequestType;
 
   List<String> premiumOnly = [];
+
   String formatCreatedAt(String? createdAt) {
     if (createdAt == null || createdAt.isEmpty) return 'Unknown';
 
@@ -67,6 +68,7 @@ class _UsersListPageState extends State<UsersListPage>
       return 'Unknown'; // في حال فشل التحليل
     }
   }
+
   @override
   void dispose() {
     if (mounted) {
@@ -306,8 +308,9 @@ class _UsersListPageState extends State<UsersListPage>
                                       children: [
                                         ProfileMatchingCircle(
                                           completionPercentage: double.tryParse(
-                                              userItem['matchingPercentage']
-                                                  .toString())??0,
+                                                  userItem['matchingPercentage']
+                                                      .toString()) ??
+                                              0,
                                           size: 40, // ضع النسبة هنا (0-100)
                                           // حجم الدائرة
                                         ),
@@ -367,7 +370,9 @@ class _UsersListPageState extends State<UsersListPage>
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.all(8.0),
-                                                  child: Text(formatCreatedAt(userItem['created_at']),
+                                                  child: Text(
+                                                    formatCreatedAt(
+                                                        userItem['created_at']),
                                                     style: const TextStyle(
                                                         fontSize: 11),
                                                   ),
@@ -450,8 +455,8 @@ class _UsersListPageState extends State<UsersListPage>
             text: "📒 ${context.lwTranslate.basic}",
           ),
           Tab(
-            child: _badgeCount(
-                context, 'personal', {'title': "ℹ️ ${context.lwTranslate.personal}"}),
+            child: _badgeCount(context, 'personal',
+                {'title': "ℹ️ ${context.lwTranslate.personal}"}),
           ),
         ];
         tempFilterInputData['name'] =
@@ -468,9 +473,9 @@ class _UsersListPageState extends State<UsersListPage>
             : '';
 
         List<Widget> filterChildren = <Widget>[
-
-
-SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           AgeSlider(
             labelText: context.lwTranslate.minimumAge,
             initialMinAge: int.tryParse(tempFilterInputData['min_age']) ?? 18,
@@ -483,9 +488,11 @@ SizedBox(height: 20,),
           DistanceSlider(
             labelText: context.lwTranslate.distanceFromMyLocationDistanceUnit(
                 basicFilterData['distanceUnit']),
-            initialDistance: int.tryParse(tempFilterInputData['distance']) ?? 10,
+            initialDistance:
+                int.tryParse(tempFilterInputData['distance']) ?? 10,
             onChanged: (distance) {
-              _updateTempFindFilterData(context, 'distance', distance.toString());
+              _updateTempFindFilterData(
+                  context, 'distance', distance.toString());
             },
           ),
           SelectField(
@@ -510,7 +517,6 @@ SizedBox(height: 20,),
               _updateTempFindFilterData(context, 'username', value);
             },
           ),
-
         ];
         List<Widget> filterPersonalChildren = <Widget>[];
         if (!specificationSelectedCount.containsKey('personal')) {
@@ -918,7 +924,6 @@ SizedBox(height: 20,),
                     if (index != 0 && !userInfo['is_premium']) {
                       tabController.index = 0;
                       navigatePage(context, BePremiumAlertInfo());
-
                     } else {
                       tabController.index = index;
                     }
@@ -927,6 +932,10 @@ SizedBox(height: 20,),
                   controller: tabController,
                   tabs: filterTabs,
                   indicatorColor: Theme.of(context).primaryColor,
+                  labelColor: Colors.blue,
+                  overlayColor:
+                      WidgetStatePropertyAll(Theme.of(context).primaryColor),
+                  dividerColor: Colors.blue,
                 ),
                 // TabBar
                 title: const Text('Filters'),
