@@ -24,10 +24,16 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Run Flutter build (APK)
+      # إنشاء نسخة Debug
+      - name: Run Flutter build (Debug APK)
+        run: flutter build apk --debug
+
+      # إنشاء نسخة Release
+      - name: Run Flutter build (Release APK)
         run: flutter build apk --release
 
-      - name: Create Release
+      # إنشاء إصدار (Release) في GitHub
+      - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
         with:
@@ -36,9 +42,19 @@ jobs:
           draft: false
           prerelease: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
 
-      - name: Upload APK to Release
+      # رفع نسخة Debug إلى GitHub Release
+      - name: Upload Debug APK to Release
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/app/outputs/flutter-apk/app-debug.apk
+          asset_name: app-debug.apk
+          asset_content_type: application/vnd.android.package-archive
+
+      # رفع نسخة Release إلى GitHub Release
+      - name: Upload Release APK to Release
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
