@@ -1,0 +1,34 @@
+name: Flutter Build on Commit
+
+on:
+  push:
+    branches:
+      - main # قم بتحديد الفرع الذي تريد العمل عليه
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: 'stable' # أو حدد نسخة معينة مثل 3.10.0
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Run Flutter build (APK)
+      run: flutter build apk --release
+
+    - name: Upload APK to Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: app-release-apk
+        path: build/app/outputs/flutter-apk/app-release.apk
