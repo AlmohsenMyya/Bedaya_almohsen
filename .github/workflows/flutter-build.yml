@@ -3,10 +3,10 @@ name: Flutter Build on Commit
 on:
   push:
     branches:
-      - main # قم بتحديد الفرع الذي تريد العمل عليه
+      - master # قم بتحديد الفرع الذي تريد العمل عليه
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   build:
