@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - master # تأكد من أن الفرع الذي تريد العمل عليه هو master
-  pull_request:
-    branches:
-      - master
 
 jobs:
   build:
@@ -19,7 +16,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.3' # حدد إصدار Flutter المطلوب
+          flutter-version: '3.24.3' # تحديد إصدار Flutter
 
       - name: Install dependencies
         run: flutter pub get
@@ -52,6 +49,8 @@ jobs:
           asset_path: build/app/outputs/flutter-apk/app-debug.apk
           asset_name: app-debug.apk
           asset_content_type: application/vnd.android.package-archive
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
 
       # رفع نسخة Release إلى GitHub Release
       - name: Upload Release APK to Release
@@ -61,3 +60,5 @@ jobs:
           asset_path: build/app/outputs/flutter-apk/app-release.apk
           asset_name: app-release.apk
           asset_content_type: application/vnd.android.package-archive
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
