@@ -247,9 +247,10 @@ class _ChatListWidgetState extends State<ChatListWidget> {
   @override
   void initState() {
     super.initState();
+    targetUserId = widget.sourceElement["user_id"] is int
+        ? widget.sourceElement["user_id"] as int
+        : int.tryParse(widget.sourceElement["user_id"]?.toString() ?? widget.sourceElement["_id"]?.toString() ?? "0")!;
 
-    targetUserId =
-    int.tryParse(widget.sourceElement["user_id"] ?? widget.sourceElement["_id"] ?? "0")!    ;
     messageDraftFocusNode = FocusNode();
     data_transport
         .get('messenger/$targetUserId/get-user-messages', context: context)
