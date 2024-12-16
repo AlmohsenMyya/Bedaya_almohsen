@@ -385,7 +385,7 @@ class _ChatListWidgetState extends State<ChatListWidget> {
                                 content:
                                     Text(context.lwTranslate.requestDenied),
                                 leading: const Icon(Icons.block),
-                                backgroundColor: Colors.red,
+                                backgroundColor: Theme.of(context).colorScheme.primary,
                                 actions: const <Widget>[
                                   TextButton(
                                     onPressed: null,
@@ -408,7 +408,7 @@ class _ChatListWidgetState extends State<ChatListWidget> {
                                     : Text(context.lwTranslate
                                         .youCanAcceptOrDenyUserMessageRequest),
                                 leading: const Icon(Icons.block),
-                                backgroundColor: Colors.red,
+                                backgroundColor: Theme.of(context).colorScheme.primary,
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: (() {
@@ -543,22 +543,22 @@ class _ChatListWidgetState extends State<ChatListWidget> {
                                             });
                                           },
                                         ),
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.attach_file,
-                                          color: Colors.blueAccent,
-                                        ),
-                                        onPressed: () {
-                                          pickAndUploadFile(context,
-                                              'messenger/$targetUserId/send-message',
-                                              allowMultiple: false,
-                                              onStart: (imageSelected) {},
-                                              onSuccess: (value, data) {},
-                                              onError: (error) {
-                                            pr(error);
-                                          });
-                                        },
-                                      )
+                                      // IconButton(
+                                      //   icon: const Icon(
+                                      //     Icons.attach_file,
+                                      //     color: Colors.blueAccent,
+                                      //   ),
+                                      //   onPressed: () {
+                                      //     pickAndUploadFile(context,
+                                      //         'messenger/$targetUserId/send-message',
+                                      //         allowMultiple: false,
+                                      //         onStart: (imageSelected) {},
+                                      //         onSuccess: (value, data) {},
+                                      //         onError: (error) {
+                                      //       pr(error);
+                                      //     });
+                                      //   },
+                                      // )
                                     ],
                                   ),
                                 ),
@@ -718,7 +718,7 @@ class _ChatListWidgetState extends State<ChatListWidget> {
           elevation: 1,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           color: !chatMessageItem['is_message_received']
-              ? const Color.fromARGB(255, 192, 120, 192)
+              ? const Color.fromARGB(255, 198, 29, 97)
               : null,
           margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           child: Stack(
@@ -766,7 +766,7 @@ class _ChatListWidgetState extends State<ChatListWidget> {
                         chatMessageItem['message'],
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 25,
                         ),
                       ),
                     ),
@@ -802,7 +802,7 @@ class _ChatListWidgetState extends State<ChatListWidget> {
                     Text(
                       chatMessageItem['created_on'],
                       style: const TextStyle(
-                        fontSize: 13,
+                        fontSize: 11,
                         color: Colors.white54,
                       ),
                     ),
@@ -822,7 +822,8 @@ class _ChatListWidgetState extends State<ChatListWidget> {
         Function? onStart,
         FileType pickingType = FileType.image,
         bool allowMultiple = false,
-        String? allowedExtensions = ''}) async {
+        String? allowedExtensions = ''}) async
+  {
     try {
       final ImagePicker picker = ImagePicker();
       XFile? pickedFile = await picker.pickImage(
