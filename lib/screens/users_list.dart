@@ -47,13 +47,12 @@ class _UsersListPageState extends State<UsersListPage>
   Map<String, dynamic> tempFilterInputData = {};
   Map<String, num> specificationSelectedCount = {};
   Map genderList = {};
-  Map<String, String> countryList = {"0":"All"};
+  Map<String, String> countryList = {"0": "All"};
   bool isRequestProcessing = false;
   bool isInitialRequestProcessed = false;
   String? userRequestType;
 
   List<String> premiumOnly = [];
-
 
   Future<void> fetchCountries() async {
     await data_transport
@@ -154,13 +153,13 @@ class _UsersListPageState extends State<UsersListPage>
     }
   }
 
-  applyFiltersAnLoadSearchResult()async {
+  applyFiltersAnLoadSearchResult() async {
     setState(() {
       items = [];
       totalCount = 0;
       isRequestProcessing = true;
     });
-   await fetchCountries();
+    await fetchCountries();
     data_transport
         .get(widget.pageBaseUrl, queryParameters: tempFilterInputData)
         .then((dataReceived) {
@@ -377,7 +376,8 @@ class _UsersListPageState extends State<UsersListPage>
                                       children: [
                                         ProfileMatchingCircle(
                                           completionPercentage: double.tryParse(
-                                              userItem['matchingPercentage'].toString()) ??
+                                                  userItem['matchingPercentage']
+                                                      .toString()) ??
                                               0,
                                           size: 50, // ضع النسبة هنا (0-100)
                                           // حجم الدائرة
@@ -385,85 +385,127 @@ class _UsersListPageState extends State<UsersListPage>
                                         Spacer(),
                                         Container(
                                           decoration: BoxDecoration(
-                                            color: Colors.black.withOpacity(0.3), // خلفية شفافة
-                                            borderRadius: BorderRadius.circular(8),
+                                            color:
+                                                Colors.black.withOpacity(0.3),
+                                            // خلفية شفافة
+                                            borderRadius:
+                                                BorderRadius.circular(8),
                                           ),
                                           padding: const EdgeInsets.all(4.0),
                                           child: Text(
-                                            (userItem['fullName'] ?? userItem['userFullName']) ?? '',
+                                            (userItem['fullName'] ??
+                                                    userItem['userFullName']) ??
+                                                '',
                                             textAlign: TextAlign.center,
                                             overflow: TextOverflow.clip,
                                             softWrap: true,
                                             style: TextStyle(
-                                              color: Theme.of(context).colorScheme.primary,
-                                              fontSize: 21,
-                                              fontWeight: FontWeight.bold
-                                            ),
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                                fontSize: 21,
+                                                fontWeight: FontWeight.bold),
                                           ),
                                         ),
                                         Align(
                                           alignment: Alignment.bottomCenter,
                                           child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
-                                              if (userItem['detailString'] != null)
+                                              if (userItem['detailString'] !=
+                                                  null)
                                                 Container(
                                                   decoration: BoxDecoration(
-                                                    color: Colors.white.withOpacity(0.3), // خلفية شفافة
-                                                    borderRadius: BorderRadius.circular(8),
+                                                    color: Colors.white
+                                                        .withOpacity(
+                                                            0.3), // خلفية شفافة
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
                                                   ),
-                                                  padding: const EdgeInsets.all(4.0),
+                                                  padding:
+                                                      const EdgeInsets.all(4.0),
                                                   child: Text(
-                                                    userItem['detailString'].toString(),
+                                                    userItem['detailString']
+                                                        .toString(),
                                                   ),
                                                 ),
-                                              if (userItem['countryName'] != null)
+                                              if (userItem['countryName'] !=
+                                                  null)
                                                 Container(
                                                   decoration: BoxDecoration(
-                                                    color: Colors.white.withOpacity(0.3), // خلفية شفافة
-                                                    borderRadius: BorderRadius.circular(8),
+                                                    color: Colors.white
+                                                        .withOpacity(
+                                                            0.3), // خلفية شفافة
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
                                                   ),
-                                                  padding: const EdgeInsets.all(4.0),
+                                                  padding:
+                                                      const EdgeInsets.all(4.0),
                                                   child: Text(
-                                                    userItem['countryName'] ?? '',
+                                                    userItem['countryName'] ??
+                                                        '',
                                                     textAlign: TextAlign.center,
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                   ),
                                                 ),
-                                              if (userItem['created_at'] != null)
+                                              if (userItem['created_at'] !=
+                                                  null)
                                                 Container(
                                                   decoration: BoxDecoration(
-                                                    color: Colors.white.withOpacity(0.3), // خلفية شفافة
-                                                    borderRadius: BorderRadius.circular(8),
+                                                    color: Colors.white
+                                                        .withOpacity(
+                                                            0.3), // خلفية شفافة
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
                                                   ),
-                                                  padding: const EdgeInsets.all(8.0),
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
                                                   child: Text(
-                                                    formatCreatedAt(userItem['created_at']),
-                                                    style: const TextStyle(fontSize: 11),
+                                                    formatCreatedAt(
+                                                        userItem['created_at']),
+                                                    style: const TextStyle(
+                                                        fontSize: 11),
                                                   ),
                                                 ),
-                                              if (userRequestType == 'blocked_users')
+                                              if (userRequestType ==
+                                                  'blocked_users')
                                                 Container(
                                                   decoration: BoxDecoration(
-                                                    color: Colors.white.withOpacity(0.3), // خلفية شفافة
-                                                    borderRadius: BorderRadius.circular(8),
+                                                    color: Colors.white
+                                                        .withOpacity(
+                                                            0.3), // خلفية شفافة
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
                                                   ),
                                                   child: ElevatedButton(
                                                     child: Text(
-                                                      context.lwTranslate.unblock,
+                                                      context
+                                                          .lwTranslate.unblock,
                                                     ),
                                                     onPressed: () {
                                                       setState(() {
-                                                        items.removeWhere((item) {
-                                                          return item['userUId'] == userItem['userUId'];
+                                                        items.removeWhere(
+                                                            (item) {
+                                                          return item[
+                                                                  'userUId'] ==
+                                                              userItem[
+                                                                  'userUId'];
                                                         });
-                                                        totalCount = totalCount - 1;
+                                                        totalCount =
+                                                            totalCount - 1;
                                                       });
                                                       data_transport.post(
                                                         '${userItem['userUId']}/unblock-user-data',
                                                         context: context,
-                                                        onSuccess: (responseData) {},
+                                                        onSuccess:
+                                                            (responseData) {},
                                                       );
                                                     },
                                                   ),
@@ -473,7 +515,6 @@ class _UsersListPageState extends State<UsersListPage>
                                         ),
                                       ],
                                     )
-
                                   ],
                                 ),
                               ),
@@ -519,12 +560,26 @@ class _UsersListPageState extends State<UsersListPage>
       builder: (BuildContext context) {
         late final TabController tabController;
         List<Widget> filterTabs = [
-          Tab(
-            text: "📒 ${context.lwTranslate.basic}",
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.3), // خلفية شفافة
+              borderRadius: BorderRadius.circular(8),
+            ),
+            padding: const EdgeInsets.all(3.0),
+            child: Tab(
+              text: "📒 ${context.lwTranslate.basic}",
+            ),
           ),
-          Tab(
-            child: _badgeCount(context, 'personal',
-                {'title': "ℹ️ ${context.lwTranslate.personal}"}),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.3), // خلفية شفافة
+              borderRadius: BorderRadius.circular(8),
+            ),
+            padding: const EdgeInsets.all(3.0),
+            child: Tab(
+              child: _badgeCount(context, 'personal',
+                  {'title': "ℹ️ ${context.lwTranslate.personal}"}),
+            ),
           ),
         ];
         tempFilterInputData['name'] =
@@ -669,11 +724,14 @@ class _UsersListPageState extends State<UsersListPage>
               _updateTempFindFilterData(context, 'looking_for', value);
             },
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           DropdownButtonFormField<String>(
-            value: countryList.containsKey(tempFilterInputData['country_filter'])
-                ? tempFilterInputData['country_filter']
-                : countryList.keys.first,
+            value:
+                countryList.containsKey(tempFilterInputData['country_filter'])
+                    ? tempFilterInputData['country_filter']
+                    : countryList.keys.first,
             items: countryList.entries.map((entry) {
               return DropdownMenuItem<String>(
                 value: entry.key,
@@ -693,8 +751,6 @@ class _UsersListPageState extends State<UsersListPage>
               border: OutlineInputBorder(),
             ),
           ),
-
-
           InputField(
             initialValue: tempFilterInputData['name'],
             labelText: context.lwTranslate.name,
@@ -750,9 +806,16 @@ class _UsersListPageState extends State<UsersListPage>
                   }
                 });
 
-                filterTabs[tabController.index] = Tab(
-                  child: _badgeCount(context, 'personal',
-                      {'title': context.lwTranslate.personal}),
+                filterTabs[tabController.index] = Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.3), // خلفية شفافة
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.all(3.0),
+                  child: Tab(
+                    child: _badgeCount(context, 'personal',
+                        {'title': context.lwTranslate.personal}),
+                  ),
                 );
                 // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
                 tabController.notifyListeners();
@@ -801,9 +864,16 @@ class _UsersListPageState extends State<UsersListPage>
                   }
                 });
 
-                filterTabs[tabController.index] = Tab(
-                  child: _badgeCount(context, 'personal',
-                      {'title': context.lwTranslate.personal}),
+                filterTabs[tabController.index] = Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.3), // خلفية شفافة
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.all(3.0),
+                  child: Tab(
+                    child: _badgeCount(context, 'personal',
+                        {'title': context.lwTranslate.personal}),
+                  ),
                 );
                 // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
                 tabController.notifyListeners();
@@ -856,9 +926,16 @@ class _UsersListPageState extends State<UsersListPage>
                   }
                 });
 
-                filterTabs[tabController.index] = Tab(
-                  child: _badgeCount(context, 'personal',
-                      {'title': context.lwTranslate.personal}),
+                filterTabs[tabController.index] = Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.3), // خلفية شفافة
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.all(3.0),
+                  child: Tab(
+                    child: _badgeCount(context, 'personal',
+                        {'title': context.lwTranslate.personal}),
+                  ),
                 );
                 // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
                 tabController.notifyListeners();
@@ -904,9 +981,16 @@ class _UsersListPageState extends State<UsersListPage>
                   }
                 });
 
-                filterTabs[tabController.index] = Tab(
-                  child: _badgeCount(context, 'personal',
-                      {'title': context.lwTranslate.personal}),
+                filterTabs[tabController.index] = Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.3), // خلفية شفافة
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.all(3.0),
+                  child: Tab(
+                    child: _badgeCount(context, 'personal',
+                        {'title': context.lwTranslate.personal}),
+                  ),
                 );
                 // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
                 tabController.notifyListeners();
@@ -944,9 +1028,16 @@ class _UsersListPageState extends State<UsersListPage>
 
             List<Widget> filterChildren = [];
             filterTabs.add(
-              Tab(
-                child: _badgeCount(
-                    context, specificationItemIndex, specificationItem),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.3), // خلفية شفافة
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: const EdgeInsets.all(3.0),
+                child: Tab(
+                  child: _badgeCount(
+                      context, specificationItemIndex, specificationItem),
+                ),
               ),
             );
             specificationItem['items']
@@ -1018,9 +1109,17 @@ class _UsersListPageState extends State<UsersListPage>
                                       1);
                             }
                           }
-                          filterTabs[tabController.index] = Tab(
-                            child: _badgeCount(context, specificationItemIndex,
-                                specificationItem),
+                          filterTabs[tabController.index] = Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.3),
+                              // خلفية شفافة
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.all(3.0),
+                            child: Tab(
+                              child: _badgeCount(context,
+                                  specificationItemIndex, specificationItem),
+                            ),
                           );
                           // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
                           tabController.notifyListeners();
@@ -1125,6 +1224,7 @@ class _UsersListPageState extends State<UsersListPage>
                   controller: tabController,
                   tabs: filterTabs,
                   indicatorColor: Theme.of(context).primaryColor,
+                  unselectedLabelColor: Colors.black,
                   labelColor: Colors.blue,
                   overlayColor:
                       WidgetStatePropertyAll(Theme.of(context).primaryColor),
