@@ -377,104 +377,103 @@ class _UsersListPageState extends State<UsersListPage>
                                       children: [
                                         ProfileMatchingCircle(
                                           completionPercentage: double.tryParse(
-                                                  userItem['matchingPercentage']
-                                                      .toString()) ??
+                                              userItem['matchingPercentage'].toString()) ??
                                               0,
-                                          size: 40, // ضع النسبة هنا (0-100)
+                                          size: 50, // ضع النسبة هنا (0-100)
                                           // حجم الدائرة
                                         ),
-                                        // ProfileMatchingCircle(
-                                        //   completionPercentage: double.tryParse(
-                                        //       "3")!,
-                                        //   size: 40, // ضع النسبة هنا (0-100)
-                                        //   // حجم الدائرة
-                                        // ),
                                         Spacer(),
-                                        Text(
-                                          (userItem['fullName'] ??
-                                                  userItem['userFullName']) ??
-                                              '',
-                                          textAlign: TextAlign.center,
-                                          overflow: TextOverflow.clip,
-                                          softWrap: true,
-                                          style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            fontSize: 18,
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.black.withOpacity(0.3), // خلفية شفافة
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Text(
+                                            (userItem['fullName'] ?? userItem['userFullName']) ?? '',
+                                            textAlign: TextAlign.center,
+                                            overflow: TextOverflow.clip,
+                                            softWrap: true,
+                                            style: TextStyle(
+                                              color: Theme.of(context).colorScheme.primary,
+                                              fontSize: 21,
+                                              fontWeight: FontWeight.bold
+                                            ),
                                           ),
                                         ),
                                         Align(
                                           alignment: Alignment.bottomCenter,
                                           child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
-                                              if (userItem['detailString'] !=
-                                                  null)
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(4.0),
+                                              if (userItem['detailString'] != null)
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white.withOpacity(0.3), // خلفية شفافة
+                                                    borderRadius: BorderRadius.circular(8),
+                                                  ),
+                                                  padding: const EdgeInsets.all(4.0),
                                                   child: Text(
-                                                    userItem['detailString']
-                                                        .toString(),
+                                                    userItem['detailString'].toString(),
                                                   ),
                                                 ),
-                                              if (userItem['countryName'] !=
-                                                  null)
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(4.0),
+                                              if (userItem['countryName'] != null)
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white.withOpacity(0.3), // خلفية شفافة
+                                                    borderRadius: BorderRadius.circular(8),
+                                                  ),
+                                                  padding: const EdgeInsets.all(4.0),
                                                   child: Text(
-                                                    userItem['countryName'] ??
-                                                        '',
+                                                    userItem['countryName'] ?? '',
                                                     textAlign: TextAlign.center,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                    overflow: TextOverflow.ellipsis,
                                                   ),
                                                 ),
-                                              if (userItem['created_at'] !=
-                                                  null)
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
+                                              if (userItem['created_at'] != null)
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white.withOpacity(0.3), // خلفية شفافة
+                                                    borderRadius: BorderRadius.circular(8),
+                                                  ),
+                                                  padding: const EdgeInsets.all(8.0),
                                                   child: Text(
-                                                    formatCreatedAt(
-                                                        userItem['created_at']),
-                                                    style: const TextStyle(
-                                                        fontSize: 11),
+                                                    formatCreatedAt(userItem['created_at']),
+                                                    style: const TextStyle(fontSize: 11),
                                                   ),
                                                 ),
-                                              if (userRequestType ==
-                                                  'blocked_users')
-                                                ElevatedButton(
-                                                  child: Text(
-                                                    context.lwTranslate.unblock,
+                                              if (userRequestType == 'blocked_users')
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white.withOpacity(0.3), // خلفية شفافة
+                                                    borderRadius: BorderRadius.circular(8),
                                                   ),
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      items.removeWhere((item) {
-                                                        return item[
-                                                                'userUId'] ==
-                                                            userItem['userUId'];
+                                                  child: ElevatedButton(
+                                                    child: Text(
+                                                      context.lwTranslate.unblock,
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        items.removeWhere((item) {
+                                                          return item['userUId'] == userItem['userUId'];
+                                                        });
+                                                        totalCount = totalCount - 1;
                                                       });
-                                                      totalCount =
-                                                          totalCount - 1;
-                                                    });
-                                                    data_transport.post(
-                                                      '${userItem['userUId']}/unblock-user-data',
-                                                      context: context,
-                                                      onSuccess:
-                                                          (responseData) {},
-                                                    );
-                                                  },
-                                                )
+                                                      data_transport.post(
+                                                        '${userItem['userUId']}/unblock-user-data',
+                                                        context: context,
+                                                        onSuccess: (responseData) {},
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
                                             ],
                                           ),
                                         ),
                                       ],
-                                    ),
+                                    )
+
                                   ],
                                 ),
                               ),

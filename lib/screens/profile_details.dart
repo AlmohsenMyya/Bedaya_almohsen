@@ -1124,7 +1124,7 @@ class ProfileCompletionBar extends StatelessWidget {
                   child: Container(
                     height: 10,
                     decoration: BoxDecoration(
-                      color: Colors.red,
+                      color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
@@ -1195,7 +1195,7 @@ class ProfileMatchingCircle extends StatelessWidget {
                               strokeWidth: size * 0.1, // حجم الخط يتناسب مع حجم الدائرة
                               backgroundColor: Colors.grey[300],
                               valueColor:
-                              const AlwaysStoppedAnimation<Color>(Colors.red),
+                              const AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 198, 29, 97)),
                             ),
                           ),
                           // النسبة المئوية في منتصف الدائرة
@@ -1207,14 +1207,14 @@ class ProfileMatchingCircle extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: size * 0.25, // حجم الخط يتناسب مع حجم الدائرة
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.red,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
                               Text(
                                 '%',
                                 style: TextStyle(
                                   fontSize: size * 0.15, // حجم الخط يتناسب مع حجم الدائرة
-                                  color: Colors.red,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
                             ],
@@ -1240,6 +1240,7 @@ class ProfileMatchingCircle extends StatelessWidget {
         },
         child: Column(
           children: [
+
             Stack(
               alignment: Alignment.center,
               children: [
@@ -1247,11 +1248,13 @@ class ProfileMatchingCircle extends StatelessWidget {
                 SizedBox(
                   height: size,
                   width: size,
-                  child: CircularProgressIndicator(
-                    value: completionPercentage / 100,
-                    strokeWidth: size * 0.1, // حجم الخط يتناسب مع حجم الدائرة
-                    backgroundColor: Colors.grey[300],
-                    valueColor: const AlwaysStoppedAnimation<Color>(Colors.red),
+                  child: Container(
+                    child: CircularProgressIndicator(
+                      value: completionPercentage / 100,
+                      strokeWidth: size * 0.1, // حجم الخط يتناسب مع حجم الدائرة
+                      backgroundColor: Colors.grey[300],
+                      valueColor: const AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 198, 29, 97)),
+                    ),
                   ),
                 ),
                 // النسبة المئوية في منتصف الدائرة
@@ -1263,14 +1266,14 @@ class ProfileMatchingCircle extends StatelessWidget {
                       style: TextStyle(
                         fontSize: size * 0.25, // حجم الخط يتناسب مع حجم الدائرة
                         fontWeight: FontWeight.bold,
-                        color: Colors.red,
+                        color: Color.fromARGB(255, 198, 29, 97),
                       ),
                     ),
                     Text(
                       '%',
                       style: TextStyle(
                         fontSize: size * 0.15, // حجم الخط يتناسب مع حجم الدائرة
-                        color: Colors.red,
+                        color: Color.fromARGB(255, 198, 29, 97),
                       ),
                     ),
                   ],
