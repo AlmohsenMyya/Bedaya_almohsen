@@ -562,21 +562,35 @@ class _UsersListPageState extends State<UsersListPage>
         List<Widget> filterTabs = [
           Container(
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.3), // خلفية شفافة
+              gradient: LinearGradient(
+                colors: [
+                  Colors.white.withOpacity(0.8),
+                  Colors.grey.withOpacity(0.5),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
               borderRadius: BorderRadius.circular(8),
             ),
             padding: const EdgeInsets.all(3.0),
-            child: Tab(
+            child:  Tab(
               text: "📒 ${context.lwTranslate.basic}",
             ),
           ),
           Container(
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.3), // خلفية شفافة
+              gradient: LinearGradient(
+                colors: [
+                  Colors.white.withOpacity(0.8),
+                  Colors.grey.withOpacity(0.5),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
               borderRadius: BorderRadius.circular(8),
             ),
             padding: const EdgeInsets.all(3.0),
-            child: Tab(
+            child:  Tab(
               child: _badgeCount(context, 'personal',
                   {'title': "ℹ️ ${context.lwTranslate.personal}"}),
             ),
@@ -808,11 +822,18 @@ class _UsersListPageState extends State<UsersListPage>
 
                 filterTabs[tabController.index] = Container(
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.3), // خلفية شفافة
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.white.withOpacity(0.8),
+                        Colors.grey.withOpacity(0.5),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   padding: const EdgeInsets.all(3.0),
-                  child: Tab(
+                  child:  Tab(
                     child: _badgeCount(context, 'personal',
                         {'title': context.lwTranslate.personal}),
                   ),
@@ -866,11 +887,18 @@ class _UsersListPageState extends State<UsersListPage>
 
                 filterTabs[tabController.index] = Container(
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.3), // خلفية شفافة
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.white.withOpacity(0.8),
+                        Colors.grey.withOpacity(0.5),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   padding: const EdgeInsets.all(3.0),
-                  child: Tab(
+                  child:  Tab(
                     child: _badgeCount(context, 'personal',
                         {'title': context.lwTranslate.personal}),
                   ),
@@ -928,11 +956,18 @@ class _UsersListPageState extends State<UsersListPage>
 
                 filterTabs[tabController.index] = Container(
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.3), // خلفية شفافة
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.white.withOpacity(0.8),
+                        Colors.grey.withOpacity(0.5),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   padding: const EdgeInsets.all(3.0),
-                  child: Tab(
+                  child:  Tab(
                     child: _badgeCount(context, 'personal',
                         {'title': context.lwTranslate.personal}),
                   ),
@@ -983,11 +1018,18 @@ class _UsersListPageState extends State<UsersListPage>
 
                 filterTabs[tabController.index] = Container(
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.3), // خلفية شفافة
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.white.withOpacity(0.8),
+                        Colors.grey.withOpacity(0.5),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   padding: const EdgeInsets.all(3.0),
-                  child: Tab(
+                  child:  Tab(
                     child: _badgeCount(context, 'personal',
                         {'title': context.lwTranslate.personal}),
                   ),
@@ -1030,15 +1072,26 @@ class _UsersListPageState extends State<UsersListPage>
             filterTabs.add(
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.3), // خلفية شفافة
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.white.withOpacity(0.8),
+                      Colors.grey.withOpacity(0.5),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 padding: const EdgeInsets.all(3.0),
                 child: Tab(
                   child: _badgeCount(
-                      context, specificationItemIndex, specificationItem),
+                    context,
+                    specificationItemIndex,
+                    specificationItem,
+                  ),
                 ),
               ),
+
             );
             specificationItem['items']
                 .forEach((itemOptionKey, itemOptionValue) {
@@ -1111,12 +1164,18 @@ class _UsersListPageState extends State<UsersListPage>
                           }
                           filterTabs[tabController.index] = Container(
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.3),
-                              // خلفية شفافة
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.white.withOpacity(0.8),
+                                  Colors.grey.withOpacity(0.5),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             padding: const EdgeInsets.all(3.0),
-                            child: Tab(
+                            child:  Tab(
                               child: _badgeCount(context,
                                   specificationItemIndex, specificationItem),
                             ),
@@ -1225,7 +1284,7 @@ class _UsersListPageState extends State<UsersListPage>
                   tabs: filterTabs,
                   indicatorColor: Theme.of(context).primaryColor,
                   unselectedLabelColor: Colors.black,
-                  labelColor: Colors.blue,
+                  labelColor: Theme.of(context).primaryColor,
                   overlayColor:
                       WidgetStatePropertyAll(Theme.of(context).primaryColor),
                   dividerColor: Colors.blue,
