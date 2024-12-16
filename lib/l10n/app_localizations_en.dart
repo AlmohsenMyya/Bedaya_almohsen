@@ -7,10 +7,10 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get welcome => 'Most awaited Dating App is here!';
+  String get welcome => 'Most awaited Marriage app is here!';
 
   @override
-  String get welcomeSmallMessage => 'Dating doesn\'t have to be hard.';
+  String get welcomeSmallMessage => 'Finding your life partner doesn’t have to be hard';
 
   @override
   String get letsGo => 'Let\'s Go';

@@ -7,10 +7,10 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get welcome => 'Most awaited Dating App is here!';
+  String get welcome => 'الأكثر انتظارًا        تطبيق الزواج أصبح متاحًا الآن!';
 
   @override
-  String get welcomeSmallMessage => 'المواعدة لا تحتاج إلى أن تكون صعبة.';
+  String get welcomeSmallMessage => 'لا يجب أن يكون العثور على شريك حياتك أمرًا صعبًا.';
 
   @override
   String get letsGo => 'لنذهب';

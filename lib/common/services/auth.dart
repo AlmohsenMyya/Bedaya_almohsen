@@ -76,6 +76,13 @@ Future logout() async {
   storeAuthToken('');
   return await storeUserInfo({});
 }
+Future setFirstTimeUser(bool isFirstTime) async {
+  sharedPreferencesCache!.setBool('isFirstTime', isFirstTime);
+}
+
+bool isFirstTimeUser() {
+  return sharedPreferencesCache!.getBool('isFirstTime') ?? true;
+}
 
 Future storeUserInfo(newUserInfo) async {
   // sharedPreferencesCache ??= await SharedPreferences.getInstance();

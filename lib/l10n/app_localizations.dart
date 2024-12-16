@@ -132,13 +132,13 @@ abstract class AppLocalizations {
   /// No description provided for @welcome.
   ///
   /// In en, this message translates to:
-  /// **'Most awaited Dating App is here!'**
+  /// **'Most awaited Marriage app is here!'**
   String get welcome;
 
   /// No description provided for @welcomeSmallMessage.
   ///
   /// In en, this message translates to:
-  /// **'Dating doesn\'t have to be hard.'**
+  /// **'Finding your life partner doesn’t have to be hard'**
   String get welcomeSmallMessage;
 
   /// No description provided for @letsGo.
