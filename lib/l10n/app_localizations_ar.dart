@@ -10,7 +10,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get welcome => 'الأكثر انتظارًا        تطبيق الزواج أصبح متاحًا الآن!';
 
   @override
-  String get welcomeSmallMessage => 'لا يجب أن يكون العثور على شريك حياتك أمرًا صعبًا.';
+  String get welcomeSmallMessage => 'المواعدة لا تحتاج إلى أن تكون صعبة.';
 
   @override
   String get letsGo => 'لنذهب';

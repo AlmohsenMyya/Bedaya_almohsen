@@ -61,10 +61,10 @@ const Map configItems = {
     },
     'services': {
         'agora': {
-            'appId': '89744b1b02a548fba02c37dbc9234530',
+            'appId': '174e8f928daa4755b4c24d375734257b',
         },
         'pusher': {
-            'apiKey': '322418c82603243be688',
+            'apiKey': '68c04db9318b188b2138',
             'cluster': 'eu',
         },
         'giphy': {

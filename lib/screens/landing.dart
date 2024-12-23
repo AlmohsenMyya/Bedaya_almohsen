@@ -129,6 +129,7 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
     await pusher.subscribe(
         channelName: "channel-${getAuthInfo('_uid')}",
         onEvent: (eventResponseData) {
+          print("pusher notifcations $eventResponseData");
           FBroadcast.instance().broadcast(
             "local.broadcast.user_channel",
             value: eventResponseData,
@@ -286,7 +287,7 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
                             ),
                             // messenger
                             TabItem(
-                              icon: CupertinoIcons.chat_bubble,
+                              icon: Icons.telegram,
                             ),
                           ],
                           onTabNotify: (int i) {

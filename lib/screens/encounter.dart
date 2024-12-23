@@ -138,7 +138,7 @@ class EncounterPageState extends State<EncounterPage> {
                 if ((encounteredUserData['isPremiumUser'] != null) &&
                     encounteredUserData['isPremiumUser'])
                   const Positioned(
-                    top: 10,
+                    bottom: 10,//55555
                     right: 10,
                     child: PremiumBadgeWidget(),
                   ),
@@ -274,7 +274,7 @@ class EncounterPageState extends State<EncounterPage> {
                     if ((encounteredUserData['isPremiumUser'] != null) &&
                         encounteredUserData['isPremiumUser'])
                       const Positioned(
-                        top: 10,
+                        bottom: 10,//55555
                         right: 10,
                         child: PremiumBadgeWidget(),
                       ),
@@ -370,7 +370,7 @@ class EncounterPageState extends State<EncounterPage> {
                 if ((encounteredUserData['isPremiumUser'] != null) &&
                     encounteredUserData['isPremiumUser'])
                   const Positioned(
-                    top: 10,
+                    bottom: 10,//55555
                     right: 10,
                     child: PremiumBadgeWidget(),
                   ),
@@ -430,12 +430,12 @@ class EncounterPageState extends State<EncounterPage> {
                                 color: Colors.black,
                                 child: InkWell(
                                   splashColor: Colors.white,
-                                  child: const SizedBox(
+                                  child:  SizedBox(
                                       width: 37,
                                       height: 37,
                                       child: Icon(
                                         CupertinoIcons.heart_circle_fill,
-                                        color: Colors.green,
+                                        color: Theme.of(context).primaryColor,
                                         size: 30,
                                       )),
                                   onTap: () {
@@ -450,7 +450,9 @@ class EncounterPageState extends State<EncounterPage> {
                                 ),
                               ),
                             ),
-                            farLeftButtonIcon: CupertinoIcons.heart_slash_circle_fill,
+                            farLeftButtonIcon: CupertinoIcons.xmark_shield_fill,
+                            farLeftButtonIconColor: Colors.black,
+                            farLeftButtonBackgroundColor: Colors.yellow,
                             farRightButtonIcon: Icons.lan_rounded,
                             farLeftButtonAction: () {
                               loadNextUser();
@@ -473,9 +475,13 @@ class EncounterPageState extends State<EncounterPage> {
                             showLoading: true,
                             hideCenterButton: false,
                             leftButtonIcon:
-                                CupertinoIcons.chevron_left_circle_fill,
-                            rightButtonIcon: CupertinoIcons.chevron_right_circle_fill,
-                            centerButtonIcon: Icons.message,
+                                CupertinoIcons.refresh_bold,
+                            leftButtonIconColor: Colors.yellow,
+                            leftButtonBackgroundColor: Colors.grey,
+                            rightButtonIconColor: Colors.yellow,
+                            rightButtonBackgroundColor: Colors.grey,
+                            rightButtonIcon: CupertinoIcons.refresh_thick,
+                            centerButtonIcon: Icons.telegram,
                             onCardTap: (params) {
                               navigatePage(
                                   context,
