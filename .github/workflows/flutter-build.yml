@@ -21,16 +21,8 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # إنشاء نسخة Debug
-      - name: Run Flutter build (Debug APK)
-        run: flutter build apk --debug
-
-      # إنشاء نسخة Release
-      - name: Run Flutter build (Release APK)
-        run: flutter build apk --release
-
       # إنشاء نسخة APK مع تقسيم حسب ABI
-      - name: Run Flutter build (Release APK with Split per ABI)
+      - name: Build Release APK (Split per ABI)
         run: flutter build apk --release --split-per-abi
 
       # إنشاء إصدار (Release) في GitHub
@@ -45,55 +37,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
-      # رفع نسخة Debug إلى GitHub Release
-      - name: Upload Debug APK to Release
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/app/outputs/flutter-apk/app-debug.apk
-          asset_name: app-debug.apk
-          asset_content_type: application/vnd.android.package-archive
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
-
-      # رفع نسخة Release إلى GitHub Release
-      - name: Upload Release APK to Release
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/app/outputs/flutter-apk/app-release.apk
-          asset_name: app-release.apk
-          asset_content_type: application/vnd.android.package-archive
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
-
-      # رفع النسخ التي تم تقسيمها حسب ABI إلى GitHub Release
-      - name: Upload Split APKs to Release
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-          asset_name: app-arm64-v8a-release.apk
-          asset_content_type: application/vnd.android.package-archive
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
-
-      - name: Upload Split APKs to Release (armv7)
+      # رفع النسخة armeabi-v7a إلى GitHub Release
+      - name: Upload armeabi-v7a APK to Release
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
           asset_name: app-armeabi-v7a-release.apk
-          asset_content_type: application/vnd.android.package-archive
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
-
-      - name: Upload Split APKs to Release (x86)
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/app/outputs/flutter-apk/app-x86_64-release.apk
-          asset_name: app-x86_64-release.apk
           asset_content_type: application/vnd.android.package-archive
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
