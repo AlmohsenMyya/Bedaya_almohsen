@@ -1258,8 +1258,9 @@ class ProfileMatchingCircle extends StatelessWidget {
                   ),
                 ),
                 // النسبة المئوية في منتصف الدائرة
-                Column(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
                       '${completionPercentage.toInt()}',
@@ -1272,7 +1273,7 @@ class ProfileMatchingCircle extends StatelessWidget {
                     Text(
                       '%',
                       style: TextStyle(
-                        fontSize: size * 0.15, // حجم الخط يتناسب مع حجم الدائرة
+                        fontSize: size * 0.20, // حجم الخط يتناسب مع حجم الدائرة
                         color: Color.fromARGB(255, 198, 29, 97),
                       ),
                     ),

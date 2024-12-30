@@ -450,9 +450,7 @@ class EncounterPageState extends State<EncounterPage> {
                                 ),
                               ),
                             ),
-                            farLeftButtonIcon: CupertinoIcons.xmark_shield_fill,
-                            farLeftButtonIconColor: Colors.black,
-                            farLeftButtonBackgroundColor: Colors.yellow,
+                            farLeftButtonIcon: CupertinoIcons.heart_slash_circle_fill,
                             farRightButtonIcon: Icons.lan_rounded,
                             farLeftButtonAction: () {
                               loadNextUser();
@@ -475,12 +473,8 @@ class EncounterPageState extends State<EncounterPage> {
                             showLoading: true,
                             hideCenterButton: false,
                             leftButtonIcon:
-                                CupertinoIcons.refresh_bold,
-                            leftButtonIconColor: Colors.yellow,
-                            leftButtonBackgroundColor: Colors.grey,
-                            rightButtonIconColor: Colors.yellow,
-                            rightButtonBackgroundColor: Colors.grey,
-                            rightButtonIcon: CupertinoIcons.refresh_thick,
+                            CupertinoIcons.chevron_left_circle_fill,
+                            rightButtonIcon: CupertinoIcons.chevron_right_circle_fill,
                             centerButtonIcon: Icons.telegram,
                             onCardTap: (params) {
                               navigatePage(
