@@ -12,6 +12,26 @@ import '../support/app_theme.dart' as app_theme;
 import 'package:provider/provider.dart';
 
 import 'support/app_locales.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+
+void initializeNotifications() {
+  const AndroidInitializationSettings initializationSettingsAndroid =
+  AndroidInitializationSettings('@mipmap/ic_launcher');
+
+  const InitializationSettings initializationSettings =
+  InitializationSettings(android: initializationSettingsAndroid);
+
+  flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+    onDidReceiveNotificationResponse: (NotificationResponse response) {
+      // التعامل مع الضغط على الإشعار
+      print('Notification clicked: ${response.payload}');
+    },
+  );
+}
 
 // list of available locales
 List<Locale> supportedLocales = <Locale>[
@@ -22,6 +42,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
   await initPreferences();
+  initializeNotifications();
   // list of available locales from config
   // List configLocales = configItem('locales', fallbackValue: []);
   if (appLocales.isNotEmpty) {

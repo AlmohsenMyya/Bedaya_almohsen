@@ -69,6 +69,8 @@ dependencies:
   giphy_get: ^3.2.0
   permission_handler: ^11.0.1
   agora_rtc_engine: ^6.3.2
+  flutter_local_notifications:
+  android_intent_plus:
   flutter_smart_dialog: ^4.8.2
   audioplayers: ^6.0.0
   in_app_purchase: ^3.1.7

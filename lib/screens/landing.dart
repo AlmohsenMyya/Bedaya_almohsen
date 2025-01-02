@@ -5,6 +5,7 @@ import 'package:fbroadcast/fbroadcast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:bedaya/screens/premium.dart';
@@ -21,6 +22,7 @@ import 'profile_details.dart';
 import 'users_list.dart';
 import '../common/services/auth.dart' as auth;
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
+import 'package:android_intent_plus/android_intent.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage(
@@ -118,48 +120,160 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
     }
   }
 
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+
+  Future<void> showFullScreenNotification(Map receivedData) async {
+    print("start jknkj.n.kj.klbik");
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+    AndroidNotificationDetails(
+      'call_channel_id', // Channel ID
+      'Call Notifications', // Channel Name
+      channelDescription: 'Notifications for incoming calls',
+      importance: Importance.max,
+      priority: Priority.high,
+      fullScreenIntent: true, // Make it a full-screen notification
+    );
+
+    const NotificationDetails platformChannelSpecifics =
+    NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      receivedData['callType'] == '2' ? 'Incoming Video Call' : 'Incoming Audio Call',
+      "Call from ${receivedData['callerName']}",
+      platformChannelSpecifics,
+      payload: jsonEncode(receivedData), // Pass call data
+    ).catchError((e){
+      print("jknkj.n.kj.klbik $e");
+    });
+  }
+  // عرض إشعار محلي
+  Future<void> _showNotification(String message) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+    AndroidNotificationDetails(
+      'call_channel_id',
+      'Call Notifications',
+      channelDescription: 'Notifications for calls',
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+    );
+
+    const NotificationDetails platformChannelSpecifics =
+    NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.show(
+      0, // ID الإشعار
+      'New Notification ', // العنوان
+      message, // نص الإشعار
+      platformChannelSpecifics,
+    );
+  }
+
   initPlatformState() async {
+    // إعداد إشعارات النظام
+    await _initializeLocalNotifications();
+
+    // إعداد Pusher
     await pusher.init(
       apiKey: configItem('services.pusher.apiKey'),
       cluster: configItem('services.pusher.cluster'),
       logToConsole: configItem('debug'),
     );
     await pusher.connect();
+
+    // الاشتراك في القناة
     pusher.unsubscribe(channelName: "channel-${getAuthInfo('_uid')}");
     await pusher.subscribe(
         channelName: "channel-${getAuthInfo('_uid')}",
-        onEvent: (eventResponseData) {
-          print("pusher notifcations $eventResponseData");
-          FBroadcast.instance().broadcast(
-            "local.broadcast.user_channel",
-            value: eventResponseData,
-          );
+        onEvent: (eventResponseData) async {
+          print("Pusher notifications: $eventResponseData");
+
           Map receivedData = jsonDecode(eventResponseData.data);
-          if ((receivedData['showNotification'] != null) &&
-              (receivedData['showNotification'] == true)) {
-            showToastMessage(context,
-                receivedData['notificationMessage'] ?? receivedData['message']);
-          }
-          int notificationCount = getItemValue(
-              receivedData, 'getNotificationList.notificationCount',
-              fallbackValue: -1);
-          if (notificationCount >= 0) {
-            FBroadcast.instance().broadcast(
-              "local.broadcast.notification_count",
-              value: notificationCount,
+
+          // عرض الإشعار إذا كانت الخاصية showNotification موجودة
+          if (receivedData['showNotification'] != null &&
+              receivedData['showNotification'] == true) {
+            _showNotification(
+              receivedData['notificationMessage'] ??
+                  receivedData['message'] ??
+                  'New Notification',
             );
           }
+
+          // التعامل مع المكالمات
           if (eventResponseData.eventName == 'event.call.notification') {
             if (receivedData['type'] == 'caller-calling') {
-              SmartDialog.dismiss();
-              SmartDialog.show(builder: (ctx) {
-                return AudioVideoCall(connectionInfo: receivedData);
-              });
+              if (receivedData['callType'] == '1') {
+                // مكالمة صوتية
+                _handleIncomingCall(receivedData, isVideoCall: false);
+              } else if (receivedData['callType'] == '2') {
+                // مكالمة فيديو
+                _handleIncomingCall(receivedData, isVideoCall: true);
+              }
             }
           }
         });
   }
 
+// إعداد إشعارات النظام
+  Future<void> _initializeLocalNotifications() async {
+    await flutterLocalNotificationsPlugin.initialize(
+      const InitializationSettings(
+        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+      ),
+      onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) async {
+        String? payload = notificationResponse.payload;
+        if (payload != null) {
+          Map receivedData = jsonDecode(payload);
+          // Show the call dialog
+          SmartDialog.show(builder: (ctx) {
+            return AudioVideoCall(
+              connectionInfo: receivedData,
+            );
+          });
+        }
+      },
+    );
+  }
+
+
+
+// التعامل مع المكالمة
+  void _handleIncomingCall(Map receivedData, {required bool isVideoCall}) async {
+    // إذا كان التطبيق مفتوحًا
+    SmartDialog.dismiss();
+    SmartDialog.show(builder: (ctx) {
+      return AudioVideoCall(
+        connectionInfo: receivedData,
+      );
+    });
+
+    // إذا كان التطبيق مغلقًا، قم بإظهار الإشعار مع بيانات المكالمة
+    if (isVideoCall) {
+      // showFullScreenNotification(receivedData);
+      _showNotification("Video call from ${receivedData['callerName']}");
+    } else {
+      // showFullScreenNotification(receivedData);
+      _showNotification("Audio call from ${receivedData['callerName']}");
+    }
+  }
+  Future<void> bringAppToForeground(Map receivedData) async {
+    const AndroidIntent intent = AndroidIntent(
+      action: 'android.intent.action.MAIN',
+      category: 'android.intent.category.LAUNCHER',
+      package: 'your.app.package.name', // Replace with your app package name
+    );
+    await intent.launch();
+
+    // Show the call dialog after the app is in the foreground
+    SmartDialog.show(builder: (ctx) {
+      return AudioVideoCall(
+        connectionInfo: receivedData,
+      );
+    });
+  }
   checkUserLoggedIn() async {
     await auth.redirectIfUnauthenticated(context);
     return isLoggedIn();
