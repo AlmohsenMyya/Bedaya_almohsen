@@ -560,41 +560,91 @@ class _UsersListPageState extends State<UsersListPage>
       builder: (BuildContext context) {
         late final TabController tabController;
         List<Widget> filterTabs = [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white.withOpacity(0.8),
-                  Colors.grey.withOpacity(0.5),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.pink,
+                    Colors.blue,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blue.withOpacity(0.5),
+                    blurRadius: 10,
+                    spreadRadius: 1,
+                  ),
+                  BoxShadow(
+                    color: Colors.pink.withOpacity(0.5),
+                    blurRadius: 10,
+                    spreadRadius: 1,
+                  ),
                 ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
               ),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            padding: const EdgeInsets.all(3.0),
-            child:  Tab(
-              text: "📒 ${context.lwTranslate.basic}",
+              padding: const EdgeInsets.all(3.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                  child: Tab(
+                    text: "📒 ${context.lwTranslate.basic}",
+                  ),
+                ),
+              ),
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white.withOpacity(0.8),
-                  Colors.grey.withOpacity(0.5),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.pink,
+                    Colors.blue,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blue.withOpacity(0.5),
+                    blurRadius: 10,
+                    spreadRadius: 1,
+                  ),
+                  BoxShadow(
+                    color: Colors.pink.withOpacity(0.5),
+                    blurRadius: 10,
+                    spreadRadius: 1,
+                  ),
                 ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
               ),
-              borderRadius: BorderRadius.circular(8),
+              padding: const EdgeInsets.all(3.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                  child: Tab(
+                    child: _badgeCount(context, 'personal',
+                        {'title': "ℹ️ ${context.lwTranslate.personal}"}),
+                  ),
+                ),
+              ),
             ),
-            padding: const EdgeInsets.all(3.0),
-            child:  Tab(
-              child: _badgeCount(context, 'personal',
-                  {'title': "ℹ️ ${context.lwTranslate.personal}"}),
-            ),
-          ),
+          )
         ];
         tempFilterInputData['name'] =
             (basicFilterData['name'] != null) ? basicFilterData['name'] : '';
@@ -623,20 +673,55 @@ class _UsersListPageState extends State<UsersListPage>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                icon: Row(
-                  children: [
-                    const Icon(
-                      Icons.online_prediction,
-                      // color: Theme.of(context).primaryColor,
+                icon: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.pink,
+                        Colors.blue,
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                    Text(
-                      context.lwTranslate.menuOnlineUsers,
-                      style: const TextStyle(
-                          // color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 10),
+                    borderRadius: BorderRadius.circular(25),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.blue.withOpacity(0.5),
+                        blurRadius: 10,
+                        spreadRadius: 1,
+                      ),
+                      BoxShadow(
+                        color: Colors.pink.withOpacity(0.5),
+                        blurRadius: 10,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(3.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(25),
                     ),
-                  ],
+                    alignment: Alignment.center,
+                    child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child:  Row(
+                          children: [
+                            const Icon(
+                              Icons.online_prediction,
+                              // color: Theme.of(context).primaryColor,
+                            ),
+                            Text(
+                              context.lwTranslate.menuOnlineUsers,
+                              style: const TextStyle(
+                                // color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 8),
+                            ),
+                          ],
+                        ),),
+                  ),
                 ),
                 onPressed: () {
                   // Then close the drawer
@@ -651,20 +736,55 @@ class _UsersListPageState extends State<UsersListPage>
               ),
               // newest
               IconButton(
-                icon: Row(
-                  children: [
-                    const Icon(
-                      Icons.fiber_new,
-                      // color: Theme.of(context).primaryColor,
+                icon: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.pink,
+                        Colors.blue,
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                    Text(
-                      context.lwTranslate.menuNewestUsers,
-                      style: const TextStyle(
-                          // color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 10),
+                    borderRadius: BorderRadius.circular(25),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.blue.withOpacity(0.5),
+                        blurRadius: 10,
+                        spreadRadius: 1,
+                      ),
+                      BoxShadow(
+                        color: Colors.pink.withOpacity(0.5),
+                        blurRadius: 10,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(3.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(25),
                     ),
-                  ],
+                    alignment: Alignment.center,
+                    child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.fiber_new,
+                              // color: Theme.of(context).primaryColor,
+                            ),
+                            Text(
+                              context.lwTranslate.menuNewestUsers,
+                              style: const TextStyle(
+                                  // color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 8),
+                            ),
+                          ],
+                        )),
+                  ),
                 ),
                 onPressed: () {
                   // Then close the drawer
@@ -679,20 +799,55 @@ class _UsersListPageState extends State<UsersListPage>
               ),
               //nearest
               IconButton(
-                icon: Row(
-                  children: [
-                    const Icon(
-                      Icons.location_on_outlined,
-                      // color: Theme.of(context).primaryColor,
+                icon: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.pink,
+                        Colors.blue,
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                    Text(
-                      context.lwTranslate.menuNearestUsers,
-                      style: const TextStyle(
-                          // color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 10),
+                    borderRadius: BorderRadius.circular(25),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.blue.withOpacity(0.5),
+                        blurRadius: 10,
+                        spreadRadius: 1,
+                      ),
+                      BoxShadow(
+                        color: Colors.pink.withOpacity(0.5),
+                        blurRadius: 10,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(3.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(25),
                     ),
-                  ],
+                    alignment: Alignment.center,
+                    child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.location_on_outlined,
+                              // color: Theme.of(context).primaryColor,
+                            ),
+                            Text(
+                              context.lwTranslate.menuNearestUsers,
+                              style: const TextStyle(
+                                // color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 8),
+                            ),
+                          ],
+                        ),),
+                  ),
                 ),
                 onPressed: () {
                   // Then close the drawer
@@ -820,22 +975,47 @@ class _UsersListPageState extends State<UsersListPage>
                   }
                 });
 
-                filterTabs[tabController.index] = Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.white.withOpacity(0.8),
-                        Colors.grey.withOpacity(0.5),
+                filterTabs[tabController.index] = Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.pink,
+                          Colors.blue,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(25),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.blue.withOpacity(0.5),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
+                        BoxShadow(
+                          color: Colors.pink.withOpacity(0.5),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
                       ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
                     ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: const EdgeInsets.all(3.0),
-                  child:  Tab(
-                    child: _badgeCount(context, 'personal',
-                        {'title': context.lwTranslate.personal}),
+                    padding: const EdgeInsets.all(3.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: Tab(
+                          child: _badgeCount(context, 'personal',
+                              {'title': context.lwTranslate.personal}),
+                        ),
+                      ),
+                    ),
                   ),
                 );
                 // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
@@ -885,22 +1065,47 @@ class _UsersListPageState extends State<UsersListPage>
                   }
                 });
 
-                filterTabs[tabController.index] = Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.white.withOpacity(0.8),
-                        Colors.grey.withOpacity(0.5),
+                filterTabs[tabController.index] = Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.pink,
+                          Colors.blue,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(25),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.blue.withOpacity(0.5),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
+                        BoxShadow(
+                          color: Colors.pink.withOpacity(0.5),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
                       ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
                     ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: const EdgeInsets.all(3.0),
-                  child:  Tab(
-                    child: _badgeCount(context, 'personal',
-                        {'title': context.lwTranslate.personal}),
+                    padding: const EdgeInsets.all(3.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: Tab(
+                          child: _badgeCount(context, 'personal',
+                              {'title': context.lwTranslate.personal}),
+                        ),
+                      ),
+                    ),
                   ),
                 );
                 // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
@@ -954,22 +1159,47 @@ class _UsersListPageState extends State<UsersListPage>
                   }
                 });
 
-                filterTabs[tabController.index] = Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.white.withOpacity(0.8),
-                        Colors.grey.withOpacity(0.5),
+                filterTabs[tabController.index] = Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.pink,
+                          Colors.blue,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(25),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.blue.withOpacity(0.5),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
+                        BoxShadow(
+                          color: Colors.pink.withOpacity(0.5),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
                       ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
                     ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: const EdgeInsets.all(3.0),
-                  child:  Tab(
-                    child: _badgeCount(context, 'personal',
-                        {'title': context.lwTranslate.personal}),
+                    padding: const EdgeInsets.all(3.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: Tab(
+                          child: _badgeCount(context, 'personal',
+                              {'title': context.lwTranslate.personal}),
+                        ),
+                      ),
+                    ),
                   ),
                 );
                 // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
@@ -1016,22 +1246,47 @@ class _UsersListPageState extends State<UsersListPage>
                   }
                 });
 
-                filterTabs[tabController.index] = Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.white.withOpacity(0.8),
-                        Colors.grey.withOpacity(0.5),
+                filterTabs[tabController.index] = Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.pink,
+                          Colors.blue,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(25),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.blue.withOpacity(0.5),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
+                        BoxShadow(
+                          color: Colors.pink.withOpacity(0.5),
+                          blurRadius: 10,
+                          spreadRadius: 1,
+                        ),
                       ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
                     ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: const EdgeInsets.all(3.0),
-                  child:  Tab(
-                    child: _badgeCount(context, 'personal',
-                        {'title': context.lwTranslate.personal}),
+                    padding: const EdgeInsets.all(3.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: Tab(
+                          child: _badgeCount(context, 'personal',
+                              {'title': context.lwTranslate.personal}),
+                        ),
+                      ),
+                    ),
                   ),
                 );
                 // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
@@ -1069,30 +1324,52 @@ class _UsersListPageState extends State<UsersListPage>
             }
 
             List<Widget> filterChildren = [];
-            filterTabs.add(
-              Container(
+            filterTabs.add(Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Colors.white.withOpacity(0.8),
-                      Colors.grey.withOpacity(0.5),
+                      Colors.pink,
+                      Colors.blue,
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue.withOpacity(0.5),
+                      blurRadius: 10,
+                      spreadRadius: 1,
+                    ),
+                    BoxShadow(
+                      color: Colors.pink.withOpacity(0.5),
+                      blurRadius: 10,
+                      spreadRadius: 1,
+                    ),
+                  ],
                 ),
                 padding: const EdgeInsets.all(3.0),
-                child: Tab(
-                  child: _badgeCount(
-                    context,
-                    specificationItemIndex,
-                    specificationItem,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                    child: Tab(
+                      child: _badgeCount(
+                        context,
+                        specificationItemIndex,
+                        specificationItem,
+                      ),
+                    ),
                   ),
                 ),
               ),
-
-            );
+            ));
             specificationItem['items']
                 .forEach((itemOptionKey, itemOptionValue) {
               if (itemOptionKey == 'height') {
@@ -1162,22 +1439,50 @@ class _UsersListPageState extends State<UsersListPage>
                                       1);
                             }
                           }
-                          filterTabs[tabController.index] = Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.white.withOpacity(0.8),
-                                  Colors.grey.withOpacity(0.5),
+                          filterTabs[tabController.index] = Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.pink,
+                                    Colors.blue,
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: BorderRadius.circular(25),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.blue.withOpacity(0.5),
+                                    blurRadius: 10,
+                                    spreadRadius: 1,
+                                  ),
+                                  BoxShadow(
+                                    color: Colors.pink.withOpacity(0.5),
+                                    blurRadius: 10,
+                                    spreadRadius: 1,
+                                  ),
                                 ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
                               ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            padding: const EdgeInsets.all(3.0),
-                            child:  Tab(
-                              child: _badgeCount(context,
-                                  specificationItemIndex, specificationItem),
+                              padding: const EdgeInsets.all(3.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                alignment: Alignment.center,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10.0, right: 10.0),
+                                  child: Tab(
+                                    child: _badgeCount(
+                                        context,
+                                        specificationItemIndex,
+                                        specificationItem),
+                                  ),
+                                ),
+                              ),
                             ),
                           );
                           // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
@@ -1217,15 +1522,25 @@ class _UsersListPageState extends State<UsersListPage>
                 automaticallyImplyLeading: true,
                 actions: [
                   TextButton(
-                      child: const Row(
+                      child:  Row(
                         children: [
-                          Icon(
-                            CupertinoIcons.clear,
-                            size: 14,
-                          ),
-                          Text(
-                            'Clear all Filters',
-                            style: TextStyle(fontSize: 14),
+
+                          Container(
+
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.white.withOpacity(0.5),
+                                  blurRadius: 10,
+                                  spreadRadius: 1,
+                                ),
+                              ],
+                            ),
+                            child: Text(
+                              'Clear all Filters',
+                              style: TextStyle(fontSize: 14),
+                            ),
                           ),
                         ],
                       ),
@@ -1255,13 +1570,25 @@ class _UsersListPageState extends State<UsersListPage>
                   TextButton(
                       child: Row(
                         children: [
-                          const Icon(
-                            CupertinoIcons.check_mark,
-                            size: 24,
-                          ),
-                          Text(
-                            context.lwTranslate.apply,
-                            style: const TextStyle(fontSize: 18),
+                          // const Icon(
+                          //   CupertinoIcons.check_mark,
+                          //   size: 24,
+                          // ),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.white.withOpacity(0.5),
+                                  blurRadius: 10,
+                                  spreadRadius: 1,
+                                ),
+                              ],
+                            ),
+                            child: Text(
+                              context.lwTranslate.apply,
+                              style: const TextStyle(fontSize: 18),
+                            ),
                           ),
                         ],
                       ),
@@ -1270,27 +1597,41 @@ class _UsersListPageState extends State<UsersListPage>
                         Navigator.pop(context);
                       })
                 ],
-                bottom: TabBar(
-                  onTap: (int index) {
-                    if (index != 0 && !userInfo['is_premium']) {
-                      tabController.index = 0;
-                      navigatePage(context, BePremiumAlertInfo());
-                    } else {
-                      tabController.index = index;
-                    }
-                  },
-                  isScrollable: true,
-                  controller: tabController,
-                  tabs: filterTabs,
-                  indicatorColor: Theme.of(context).primaryColor,
-                  unselectedLabelColor: Colors.black,
-                  labelColor: Theme.of(context).primaryColor,
-                  overlayColor:
-                      WidgetStatePropertyAll(Theme.of(context).primaryColor),
-                  dividerColor: Colors.blue,
+                bottom: PreferredSize(
+                  preferredSize: const Size.fromHeight(60.0),
+                  // ارتفاع الـ TabBar
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 5.0), // مساحة فاصلة
+                    child: TabBar(
+                      onTap: (int index) {
+                        if (index != 0 && !userInfo['is_premium']) {
+                          tabController.index = 0;
+                          navigatePage(context, BePremiumAlertInfo());
+                        } else {
+                          tabController.index = index;
+                        }
+                      },
+                      isScrollable: true,
+                      controller: tabController,
+                      tabs: filterTabs,
+                      indicatorColor: Theme.of(context).primaryColor,
+                      unselectedLabelColor: Colors.white,
+                      labelColor: Theme.of(context).primaryColor,
+                    ),
+                  ),
                 ),
+
                 // TabBar
-                title: const Text('Filters'),
+                title: Container( decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.white.withOpacity(0.5),
+                      blurRadius: 10,
+                      spreadRadius: 1,
+                    ),
+                  ],
+                ),child: const Text('Filters')),
               ), // AppBar
               body: TabBarView(
                 controller: tabController,
