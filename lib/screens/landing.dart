@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:bedaya/screens/premium.dart';
@@ -121,12 +122,12 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
   }
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
 
   Future<void> showFullScreenNotification(Map receivedData) async {
     print("start jknkj.n.kj.klbik");
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
-    AndroidNotificationDetails(
+        AndroidNotificationDetails(
       'call_channel_id', // Channel ID
       'Call Notifications', // Channel Name
       channelDescription: 'Notifications for incoming calls',
@@ -136,38 +137,49 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
     );
 
     const NotificationDetails platformChannelSpecifics =
-    NotificationDetails(android: androidPlatformChannelSpecifics);
+        NotificationDetails(android: androidPlatformChannelSpecifics);
 
-    await flutterLocalNotificationsPlugin.show(
+    await flutterLocalNotificationsPlugin
+        .show(
       0,
-      receivedData['callType'] == '2' ? 'Incoming Video Call' : 'Incoming Audio Call',
+      receivedData['callType'] == '2'
+          ? 'Incoming Video Call'
+          : 'Incoming Audio Call',
       "Call from ${receivedData['callerName']}",
       platformChannelSpecifics,
       payload: jsonEncode(receivedData), // Pass call data
-    ).catchError((e){
+    )
+        .catchError((e) {
       print("jknkj.n.kj.klbik $e");
     });
   }
-  // عرض إشعار محلي
-  Future<void> _showNotification(String message) async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-    AndroidNotificationDetails(
-      'call_channel_id',
-      'Call Notifications',
-      channelDescription: 'Notifications for calls',
-      importance: Importance.max,
-      priority: Priority.high,
-      ticker: 'ticker',
-    );
 
-    const NotificationDetails platformChannelSpecifics =
-    NotificationDetails(android: androidPlatformChannelSpecifics);
+  // عرض إشعار محلي
+  Future<void> _showNotification(String message, bool isCall) async {
+     AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'call_channel_id', // معرف القناة
+      'Call Notifications', // اسم القناة
+      channelDescription: 'Notifications for calls', // وصف القناة
+      importance: Importance.max, // أهمية الإشعار
+      priority: Priority.high, // أولوية الإشعار
+      ticker: 'ticker', // نص يظهر عند عرض الإشعار
+
+          ongoing: isCall, // يجعل الإشعار ثابتًا إذا كان إشعار مكالمة
+          autoCancel: !isCall, // لا يتم إلغاء الإشعار عند السحب إذا كان مكالمة
+      playSound: !isCall, // تفعيل الصوت الافتراضي
+    );
+    if (isCall) {
+      FlutterRingtonePlayer().playRingtone();
+    }
+     NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
 
     await flutterLocalNotificationsPlugin.show(
-      0, // ID الإشعار
-      'New Notification ', // العنوان
+      0, // معرف الإشعار
+      isCall ? 'Incoming Call' : 'New Notification', // العنوان
       message, // نص الإشعار
-      platformChannelSpecifics,
+      platformChannelSpecifics, // تفاصيل الإشعار
     );
   }
 
@@ -191,15 +203,18 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
           print("Pusher notifications: $eventResponseData");
 
           Map receivedData = jsonDecode(eventResponseData.data);
-
+          if (eventResponseData.eventName == 'event.call.reject.notification') {
+            FlutterRingtonePlayer().stop();
+            await flutterLocalNotificationsPlugin.cancelAll();
+          }
           // عرض الإشعار إذا كانت الخاصية showNotification موجودة
           if (receivedData['showNotification'] != null &&
               receivedData['showNotification'] == true) {
             _showNotification(
-              receivedData['notificationMessage'] ??
-                  receivedData['message'] ??
-                  'New Notification',
-            );
+                receivedData['notificationMessage'] ??
+                    receivedData['message'] ??
+                    'New Notification',
+                false);
           }
 
           // التعامل مع المكالمات
@@ -223,7 +238,8 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
       const InitializationSettings(
         android: AndroidInitializationSettings('@mipmap/ic_launcher'),
       ),
-      onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) async {
+      onDidReceiveNotificationResponse:
+          (NotificationResponse notificationResponse) async {
         String? payload = notificationResponse.payload;
         if (payload != null) {
           Map receivedData = jsonDecode(payload);
@@ -238,10 +254,9 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
     );
   }
 
-
-
 // التعامل مع المكالمة
-  void _handleIncomingCall(Map receivedData, {required bool isVideoCall}) async {
+  void _handleIncomingCall(Map receivedData,
+      {required bool isVideoCall}) async {
     // إذا كان التطبيق مفتوحًا
     SmartDialog.dismiss();
     SmartDialog.show(builder: (ctx) {
@@ -253,12 +268,13 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
     // إذا كان التطبيق مغلقًا، قم بإظهار الإشعار مع بيانات المكالمة
     if (isVideoCall) {
       // showFullScreenNotification(receivedData);
-      _showNotification("Video call from ${receivedData['callerName']}");
+      _showNotification("Video call from ${receivedData['callerName']}", true);
     } else {
       // showFullScreenNotification(receivedData);
-      _showNotification("Audio call from ${receivedData['callerName']}");
+      _showNotification("Audio call from ${receivedData['callerName']}", true);
     }
   }
+
   Future<void> bringAppToForeground(Map receivedData) async {
     const AndroidIntent intent = AndroidIntent(
       action: 'android.intent.action.MAIN',
@@ -274,6 +290,7 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
       );
     });
   }
+
   checkUserLoggedIn() async {
     await auth.redirectIfUnauthenticated(context);
     return isLoggedIn();
