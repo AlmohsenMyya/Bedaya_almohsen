@@ -5,6 +5,8 @@ import 'package:photo_card_swiper/custom_widgets/photo_title_widget.dart';
 import 'package:photo_card_swiper/models/photo_card.dart';
 import 'package:flutter/material.dart';
 
+import 'cancel_icon.dart';
+
 class PhotoCardLayoutWidget extends StatefulWidget {
   final PhotoCard photoCard;
   final double cardHeight;
@@ -500,10 +502,9 @@ class FarLeftButtonWidget extends StatelessWidget {
           child: SizedBox(
               width: 37,
               height: 37,
-              child: Icon(
-                leftButtonIcon ?? Icons.close_rounded,
-                color: leftButtonIconColor ?? Colors.black,
-                size: 30,
+              child: Padding(
+                padding: const EdgeInsets.all(13.0),
+                child: ThickCloseIcon(size: 30, color: leftButtonIconColor ?? Colors.black),
               )),
           onTap: () {
             if (leftButtonAction != null) {
@@ -511,6 +512,7 @@ class FarLeftButtonWidget extends StatelessWidget {
             }
           },
         ),
+
       ),
     );
   }

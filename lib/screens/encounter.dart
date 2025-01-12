@@ -437,7 +437,7 @@ class EncounterPageState extends State<EncounterPage> {
                                         color: Colors.white,
                                         child: Icon(
                                           CupertinoIcons.heart_fill,
-                                          color: Colors.green,
+                                          color: Colors.green.shade300,
                                           size: 28,
                                         ),
                                       )),
