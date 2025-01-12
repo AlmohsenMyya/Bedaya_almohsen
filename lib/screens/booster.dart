@@ -243,7 +243,7 @@ class BoosterPageState extends State<BoosterPage>
                         onPressed: () {
                           navigatePage(
                             context,
-                            const PurchasePage(),
+                             PurchasePage(),
                           );
                         },
                         child: Text(context.lwTranslate.buyCredits),

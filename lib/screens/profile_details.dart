@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:like_button/like_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../screens/profile_update.dart';
 import '../common/services/auth.dart';
 import '../common/services/utils.dart';
@@ -49,6 +50,89 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
   bool _isLoaded = false;
   String _bannerAdUnitId = '';
   bool enableAds = true;
+
+  void initiatePayment({
+    required String value,
+    required String credits,
+    required BuildContext context,
+  }) async {
+    try {
+      // طباعة بدء العملية
+      print("Starting payment initialization...");
+
+      // استدعاء واجهة الدفع
+      await data_transport.post(
+        'https://bedaya.com.tr/public/api/credit-wallet/order-credit',
+        inputData: {
+          'value': value,
+          'credits': credits,
+        },
+        onFailed: (responseData) async {
+          print("Response: $responseData");
+
+          // استخراج الرابط من الرد
+          final url = responseData!['url'];
+
+          // تحقق من وجود الرابط
+          if (url != null && url.isNotEmpty) {
+            // عرض مربع حوار لتأكيد الدفع
+            final shouldProceed = await showDialog<bool>(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('تأكيد الدفع'),
+                  content:
+                      const Text('سيتم نقلك إلى صفحة الدفع. هل تريد المتابعة؟'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(false),
+                      child: const Text('إلغاء'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(true),
+                      child: const Text('متابعة'),
+                    ),
+                  ],
+                );
+              },
+            );
+
+            // إذا وافق المستخدم
+            if (shouldProceed == true) {
+              // التحقق من إمكانية فتح الرابط
+              if (await canLaunchUrl(Uri.parse(url))) {
+                await launchUrl(Uri.parse(url),
+                    mode: LaunchMode.externalApplication);
+              } else {
+                // عرض Snackbar إذا تعذر فتح الرابط
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('تعذر فتح الرابط')),
+                );
+              }
+            }
+          } else {
+            // عرض Snackbar إذا لم يكن هناك رابط في الرد
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('فشل الحصول على الرابط من الخادم')),
+            );
+          }
+        },
+        onError: (error) {
+          // معالجة الأخطاء
+          print("Error: $error");
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('حدث خطأ أثناء تنفيذ العملية')),
+          );
+        },
+      );
+    } catch (e) {
+      // معالجة استثناءات غير متوقعة
+      print("Exception: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('حدث خطأ غير متوقع')),
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -610,16 +694,30 @@ class _ProfileDetailsPageState extends State<ProfileDetailsPage> {
                                           .toString())!, // ضع النسبة هنا (0-100)
                                   // حجم الدائرة
                                 ),
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: IconButton(
+                                    onPressed: () {
+                                      initiatePayment(
+                                        value: "10",
+                                        credits: "100",
+                                        context: context,
+                                      );
+                                    },
+                                    icon: Icon(
+                                      Icons.paypal_outlined,
+                                      color: Colors.blue,
+                                    )),
+                              ),
                               if (!isOwnProfile)
                                 ProfileMatchingCircle(
                                   completionPercentage: double.tryParse(
                                       getItemValue(
-                                          data, 'data.matchingPercentage')
+                                              data, 'data.matchingPercentage')
                                           .toString())!,
                                   size: 40, // ضع النسبة هنا (0-100)
                                   // حجم الدائرة
                                 ),
-
                               if (isOwnProfile)
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1148,23 +1246,22 @@ class ProfileCompletionBar extends StatelessWidget {
   }
 }
 
-
 class ProfileMatchingCircle extends StatelessWidget {
   final double completionPercentage; // نسبة اكتمال البروفايل (0-100)
   final double size; // حجم الدائرة
-  final bool? noPadding ;
+  final bool? noPadding;
 
-  const ProfileMatchingCircle({
-    Key? key,
-    required this.completionPercentage,
-    required this.size,
-    this.noPadding
-  }) : super(key: key);
+  const ProfileMatchingCircle(
+      {Key? key,
+      required this.completionPercentage,
+      required this.size,
+      this.noPadding})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: noPadding!=null? EdgeInsets.all(0.0) : EdgeInsets.all(25.0),
+      padding: noPadding != null ? EdgeInsets.all(0.0) : EdgeInsets.all(25.0),
       child: GestureDetector(
         onTap: () {
           // عند النقر على الدائرة، نعرض مربع الحوار
@@ -1180,7 +1277,9 @@ class ProfileMatchingCircle extends StatelessWidget {
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(height: 25,),
+                    SizedBox(
+                      height: 25,
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(0.0),
                       child: Stack(
@@ -1192,10 +1291,11 @@ class ProfileMatchingCircle extends StatelessWidget {
                             width: size,
                             child: CircularProgressIndicator(
                               value: completionPercentage / 100,
-                              strokeWidth: size * 0.1, // حجم الخط يتناسب مع حجم الدائرة
+                              strokeWidth: size * 0.1,
+                              // حجم الخط يتناسب مع حجم الدائرة
                               backgroundColor: Colors.grey[300],
-                              valueColor:
-                              const AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 198, 29, 97)),
+                              valueColor: const AlwaysStoppedAnimation<Color>(
+                                  Color.fromARGB(255, 198, 29, 97)),
                             ),
                           ),
                           // النسبة المئوية في منتصف الدائرة
@@ -1205,7 +1305,8 @@ class ProfileMatchingCircle extends StatelessWidget {
                               Text(
                                 '${completionPercentage.toInt()}',
                                 style: TextStyle(
-                                  fontSize: size * 0.25, // حجم الخط يتناسب مع حجم الدائرة
+                                  fontSize: size * 0.25,
+                                  // حجم الخط يتناسب مع حجم الدائرة
                                   fontWeight: FontWeight.bold,
                                   color: Theme.of(context).primaryColor,
                                 ),
@@ -1213,7 +1314,8 @@ class ProfileMatchingCircle extends StatelessWidget {
                               Text(
                                 '%',
                                 style: TextStyle(
-                                  fontSize: size * 0.15, // حجم الخط يتناسب مع حجم الدائرة
+                                  fontSize: size * 0.15,
+                                  // حجم الخط يتناسب مع حجم الدائرة
                                   color: Theme.of(context).primaryColor,
                                 ),
                               ),
@@ -1240,7 +1342,6 @@ class ProfileMatchingCircle extends StatelessWidget {
         },
         child: Column(
           children: [
-
             Stack(
               alignment: Alignment.center,
               children: [
@@ -1253,7 +1354,8 @@ class ProfileMatchingCircle extends StatelessWidget {
                       value: completionPercentage / 100,
                       strokeWidth: size * 0.1, // حجم الخط يتناسب مع حجم الدائرة
                       backgroundColor: Colors.grey[300],
-                      valueColor: const AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 198, 29, 97)),
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                          Color.fromARGB(255, 198, 29, 97)),
                     ),
                   ),
                 ),
@@ -1287,4 +1389,3 @@ class ProfileMatchingCircle extends StatelessWidget {
     );
   }
 }
-

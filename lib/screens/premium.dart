@@ -215,7 +215,7 @@ class PremiumPageState extends State<PremiumPage>
                               onPressed: () {
                                 navigatePage(
                                   context,
-                                  const PurchasePage(),
+                                   PurchasePage(),
                                 );
                               },
                               child: Text(context.lwTranslate.buyCredits),

@@ -58,6 +58,9 @@ Future /* <http.Response> */ post(
   if ((inputData != null) && (inputData.isNotEmpty)) {
     pr('http post data: $inputData');
   }
+  print("url -- $urlToProcess");
+  print("headrs : ${_setHeaders()}");
+  print("${jsonEncode(newInputData.isEmpty ? inputData : newInputData)}");
   final httpResponse = await http
       .post(
     urlToProcess,
@@ -70,6 +73,7 @@ Future /* <http.Response> */ post(
         failedCallbackAction: onFailed);
     return value;
   });
+  print("lmlkmlkmlk ${httpResponse.body}");
   return httpResponse.body;
 }
 

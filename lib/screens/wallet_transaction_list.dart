@@ -119,7 +119,7 @@ class _WalletTransactionListPageState extends State<WalletTransactionListPage>
                 icon: const Icon(Icons.add),
                 tooltip: context.lwTranslate.buyMoreCredits,
                 onPressed: () {
-                  navigatePage(context, const PurchasePage());
+                  navigatePage(context,  PurchasePage());
                 },
               ),
           ]),
@@ -164,7 +164,7 @@ class _WalletTransactionListPageState extends State<WalletTransactionListPage>
                     if (isPurchaseSystemAvailable())
                       ElevatedButton(
                         onPressed: (() {
-                          navigatePage(context, const PurchasePage());
+                          navigatePage(context,  PurchasePage());
                         }),
                         child: Text(context.lwTranslate.buyMoreCredits),
                       )
