@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:fbroadcast/fbroadcast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
@@ -9,6 +10,7 @@ import 'package:audioplayers/audioplayers.dart' as audio_players;
 import '../../common/services/utils.dart';
 import '../../common/services/data_transport.dart' as data_transport;
 import '../../common/widgets/common.dart';
+import '../../main.dart';
 
 class AudioVideoCall extends StatefulWidget {
   const AudioVideoCall({
@@ -194,13 +196,9 @@ class Initialize extends State<AudioVideoCall> {
 
     if (widget.initiateCall && !widget.isIncomingCall) {
       startCall();
-      audioPlayer.play(
-        audio_players.AssetSource('audio/caller-ringtone.mp3'),
-      );
+      FlutterRingtonePlayer().playRingtone();
     } else {
-      audioPlayer.play(
-        audio_players.AssetSource('audio/receiver-ringtone.mp3'),
-      );
+      FlutterRingtonePlayer().playRingtone();
     }
   }
 
@@ -322,7 +320,9 @@ class Initialize extends State<AudioVideoCall> {
                           ? null
                           : () async {
                               acceptAndJoin();
-                              await audioPlayer.stop();
+                             await FlutterRingtonePlayer().stop();
+                              await flutterLocalNotificationsPlugin.cancelAll();
+                              // await audioPlayer.stop();
                             },
                       icon: const Icon(Icons.call_rounded),
                     ),
@@ -345,7 +345,8 @@ class Initialize extends State<AudioVideoCall> {
                       onPressed: () async {
                         if (!widget.initiateCall) {
                           leave();
-                          audioPlayer.stop();
+                          await FlutterRingtonePlayer().stop();
+                          await flutterLocalNotificationsPlugin.cancelAll();
                         }
                         if (_remoteUid != null) {
                         } else {
