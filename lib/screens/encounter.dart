@@ -433,10 +433,13 @@ class EncounterPageState extends State<EncounterPage> {
                                   child:  SizedBox(
                                       width: 37,
                                       height: 37,
-                                      child: Icon(
-                                        CupertinoIcons.heart_circle_fill,
-                                        color: Theme.of(context).primaryColor,
-                                        size: 30,
+                                      child: Container(
+                                        color: Colors.white,
+                                        child: Icon(
+                                          CupertinoIcons.heart_fill,
+                                          color: Colors.green,
+                                          size: 28,
+                                        ),
                                       )),
                                   onTap: () {
                                     loadNextUser();
@@ -450,7 +453,9 @@ class EncounterPageState extends State<EncounterPage> {
                                 ),
                               ),
                             ),
-                            farLeftButtonIcon: CupertinoIcons.heart_slash_circle_fill,
+
+                            farLeftButtonIconColor: Theme.of(context).primaryColor,
+                            farLeftButtonBackgroundColor: Colors.white,
                             farRightButtonIcon: Icons.lan_rounded,
                             farLeftButtonAction: () {
                               loadNextUser();

@@ -501,7 +501,7 @@ class FarLeftButtonWidget extends StatelessWidget {
               width: 37,
               height: 37,
               child: Icon(
-                leftButtonIcon ?? Icons.close,
+                leftButtonIcon ?? Icons.close_rounded,
                 color: leftButtonIconColor ?? Colors.black,
                 size: 30,
               )),
