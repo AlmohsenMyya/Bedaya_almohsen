@@ -216,14 +216,15 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
                     'New Notification',
                 false);
           }
-
           // التعامل مع المكالمات
           if (eventResponseData.eventName == 'event.call.notification') {
             if (receivedData['type'] == 'caller-calling') {
-              if (receivedData['callType'] == '1') {
+
+              if (receivedData['callType'] == '1' || receivedData['callType'] == 1 ) {
+                print("mmmmm 111 callType push voice ");
                 // مكالمة صوتية
                 _handleIncomingCall(receivedData, isVideoCall: false);
-              } else if (receivedData['callType'] == '2') {
+              } else if (receivedData['callType'] == '2' || receivedData['callType'] == 2) {
                 // مكالمة فيديو
                 _handleIncomingCall(receivedData, isVideoCall: true);
               }
@@ -257,6 +258,7 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
 // التعامل مع المكالمة
   void _handleIncomingCall(Map receivedData,
       {required bool isVideoCall}) async {
+    print("callType -- start handling");
     // إذا كان التطبيق مفتوحًا
     SmartDialog.dismiss();
     SmartDialog.show(builder: (ctx) {

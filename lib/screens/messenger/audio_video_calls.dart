@@ -196,7 +196,9 @@ class Initialize extends State<AudioVideoCall> {
 
     if (widget.initiateCall && !widget.isIncomingCall) {
       startCall();
-      FlutterRingtonePlayer().playRingtone();
+      audioPlayer.play(
+        audio_players.AssetSource('audio/caller-ringtone.mp3'),
+      );
     } else {
       FlutterRingtonePlayer().playRingtone();
     }
