@@ -5,6 +5,7 @@ import 'package:fbroadcast/fbroadcast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -183,9 +184,25 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
     );
   }
 
-  initPlatformState() async {
+
+  Future<void> initPlatformState() async {
     // إعداد إشعارات النظام
     await _initializeLocalNotifications();
+
+    // تفعيل وضع الخلفية
+    const androidConfig = FlutterBackgroundAndroidConfig(
+      notificationTitle: "App Running",
+      notificationText: "Listening for notifications in the background",
+      notificationImportance: AndroidNotificationImportance.high,
+      enableWifiLock: true,
+    );
+
+    final hasPermissions =
+    await FlutterBackground.initialize(androidConfig: androidConfig);
+
+    if (hasPermissions) {
+      await FlutterBackground.enableBackgroundExecution();
+    }
 
     // إعداد Pusher
     await pusher.init(
@@ -203,29 +220,31 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
           print("Pusher notifications: $eventResponseData");
 
           Map receivedData = jsonDecode(eventResponseData.data);
+
+          // إذا كان هناك إشعار برفض المكالمة
           if (eventResponseData.eventName == 'event.call.reject.notification') {
             FlutterRingtonePlayer().stop();
             await flutterLocalNotificationsPlugin.cancelAll();
           }
+
           // عرض الإشعار إذا كانت الخاصية showNotification موجودة
           if (receivedData['showNotification'] != null &&
               receivedData['showNotification'] == true) {
             _showNotification(
-                receivedData['notificationMessage'] ??
-                    receivedData['message'] ??
-                    'New Notification',
-                false);
+              receivedData['notificationMessage'] ??
+                  receivedData['message'] ??
+                  'New Notification',false
+            );
           }
+
           // التعامل مع المكالمات
           if (eventResponseData.eventName == 'event.call.notification') {
             if (receivedData['type'] == 'caller-calling') {
-
-              if (receivedData['callType'] == '1' || receivedData['callType'] == 1 ) {
-                print("mmmmm 111 callType push voice ");
-                // مكالمة صوتية
+              if (receivedData['callType'] == '1' || receivedData['callType'] == 1) {
+                print("Voice call detected");
                 _handleIncomingCall(receivedData, isVideoCall: false);
               } else if (receivedData['callType'] == '2' || receivedData['callType'] == 2) {
-                // مكالمة فيديو
+                print("Video call detected");
                 _handleIncomingCall(receivedData, isVideoCall: true);
               }
             }
