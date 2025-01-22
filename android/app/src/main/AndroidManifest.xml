@@ -11,7 +11,7 @@
 <!--    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>-->
 <!--    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" tools:targetApi="donut"/>-->
 <!--    &lt;!&ndash;  Notification permission (for Android 13+ API level 33)  &ndash;&gt;-->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" android:maxSdkVersion="32" tools:targetApi="donut"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 

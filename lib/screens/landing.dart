@@ -181,6 +181,7 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
       isCall ? 'Incoming Call' : 'New Notification', // العنوان
       message, // نص الإشعار
       platformChannelSpecifics, // تفاصيل الإشعار
+
     );
   }
 
@@ -188,21 +189,6 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
   Future<void> initPlatformState() async {
     // إعداد إشعارات النظام
     await _initializeLocalNotifications();
-
-    // تفعيل وضع الخلفية
-    const androidConfig = FlutterBackgroundAndroidConfig(
-      notificationTitle: "App Running",
-      notificationText: "Listening for notifications in the background",
-      notificationImportance: AndroidNotificationImportance.high,
-      enableWifiLock: true,
-    );
-
-    final hasPermissions =
-    await FlutterBackground.initialize(androidConfig: androidConfig);
-
-    if (hasPermissions) {
-      await FlutterBackground.enableBackgroundExecution();
-    }
 
     // إعداد Pusher
     await pusher.init(
