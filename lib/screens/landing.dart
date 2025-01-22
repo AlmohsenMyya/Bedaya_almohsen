@@ -134,6 +134,7 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
       channelDescription: 'Notifications for incoming calls',
       importance: Importance.max,
       priority: Priority.high,
+          playSound: true,
       fullScreenIntent: true, // Make it a full-screen notification
     );
 
@@ -168,7 +169,7 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
 
           ongoing: isCall, // يجعل الإشعار ثابتًا إذا كان إشعار مكالمة
           autoCancel: !isCall, // لا يتم إلغاء الإشعار عند السحب إذا كان مكالمة
-      playSound: !isCall, // تفعيل الصوت الافتراضي
+      playSound: true, // تفعيل الصوت الافتراضي
     );
     if (isCall) {
       FlutterRingtonePlayer().playRingtone();
