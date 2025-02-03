@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './../../screens/landing.dart';
 import '../../screens/user/login.dart';
 import 'utils.dart';
@@ -91,7 +92,7 @@ Future storeUserInfo(newUserInfo) async {
 }
 
 Future fetchAuthInfo() async {
-  // sharedPreferencesCache ??= await SharedPreferences.getInstance();
+  sharedPreferencesCache ??= await SharedPreferences.getInstance();
   authToken = sharedPreferencesCache!.getString('authToken') ?? '';
   var localAuthData = sharedPreferencesCache!.getString('userInfo');
   if (localAuthData != null) {

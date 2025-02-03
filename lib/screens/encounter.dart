@@ -30,17 +30,13 @@ class EncounterPageState extends State<EncounterPage> {
   var userQueue = []; // قائمة الانتظار
   int maxQueueSize = 5; // الحد الأقصى لعدد المستخدمين في القائمة
   void fetchEncounterQueue() async {
-    print("debug queue ... start");
     if (userQueue.length < maxQueueSize) {
-      print("debug queue ... current length: ${userQueue.length}");
       data_transport.get(
         'encounter-data',
         context: context,
         onSuccess: (responseData) {
           var usersData = getItemValue(responseData, 'data.randomUserData',
               fallbackValue: {});
-          print("debug queue ---** $usersData");
-
           setState(() {
             if (usersData is List && usersData.isNotEmpty) {
               // إذا كانت البيانات قائمة، أضفها إلى قائمة الانتظار
@@ -51,8 +47,6 @@ class EncounterPageState extends State<EncounterPage> {
               // إذا كانت البيانات عنصرًا مفردًا، أضفه إلى قائمة الانتظار
               userQueue.add(usersData);
             }
-
-            print("debug queue length  ${userQueue.length}");
 
             // استدعاء الوظيفة مجددًا إذا لم يصل طول القائمة إلى maxQueueSize
             if (userQueue.length < maxQueueSize) {
@@ -65,9 +59,8 @@ class EncounterPageState extends State<EncounterPage> {
   }
 
   void loadNextUser() {
-    print("debug queue ... loadNextUser ${userQueue.isNotEmpty}");
     if (userQueue.isNotEmpty) {
-      print("debug queue ... start length ${userQueue.length}");
+
       setState(() {
         isSkiped = true;
         if (encounteredUserData.isNotEmpty) {
@@ -76,7 +69,7 @@ class EncounterPageState extends State<EncounterPage> {
         }
         encounteredUserData = userQueue.removeLast(); // استرجاع المستخدم الأول
 
-        print("debug queue ... end length ${userQueue.length}");
+
         encounterCards = [
           PhotoCard(
             cardId: encounteredUserData['_uid'],
@@ -164,7 +157,7 @@ class EncounterPageState extends State<EncounterPage> {
           ),
         ];
       });
-      print("debug queue --- ok ?");
+
       // تحميل المزيد من البيانات إذا اقتربت قائمة الانتظار من النفاد
       if (userQueue.length < maxQueueSize ~/ 2) {
         fetchEncounterQueue();

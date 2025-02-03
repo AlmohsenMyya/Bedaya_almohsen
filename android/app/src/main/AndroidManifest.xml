@@ -5,28 +5,25 @@
         android:name="android.hardware.camera"
         android:required="false" />
 
+    <!-- أذونات الإنترنت والإشعارات والخدمات -->
     <uses-permission android:name="android.permission.INTERNET"/>
-<!--    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>-->
-<!--    &lt;!&ndash;  Read and write access for JSON file handling (for API level < 29)  &ndash;&gt;-->
-<!--    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>-->
-<!--    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" tools:targetApi="donut"/>-->
-<!--    &lt;!&ndash;  Notification permission (for Android 13+ API level 33)  &ndash;&gt;-->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
-    <!--    <uses-permission android:name="android.permission.CAMERA" />-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
 
     <application
         android:label="bedaya"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 
-        <!-- إضافة معرف التطبيق (App ID) الخاص بـ AdMob هنا -->
+        <!-- إعداد AdMob -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/> <!-- App ID تجريبي من Google للـ AdMob -->
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
 
+        <!-- إعداد الـ Activity الرئيسية -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -45,42 +42,44 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="your.app.scheme" />
             </intent-filter>
-            <!-- Specifies an Android theme to apply to this Activity as soon as
-                 the Android process has started. This theme is visible to the user
-                 while the Flutter UI initializes. After that, this theme continues
-                 to determine the Window background behind the Flutter UI. -->
+
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
-                android:resource="@style/NormalTheme"
-                />
+                android:resource="@style/NormalTheme" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <!-- Don't delete the meta-data below.
-             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
+        <!-- تشغيل خدمة الخلفية -->
+        <service
+            android:name=".MyBackgroundService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+
+        <!-- تشغيل الخدمة عند إعادة تشغيل الهاتف -->
+        <receiver
+            android:name=".BootReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="dev.fluttercommunity.plus.androidalarmmanager.RebootBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <!-- Foreground service declaration -->
-        <service
-            android:name=".ForegroundService"
-            android:exported="true"
-            android:foregroundServiceType="phoneCall"
-            android:permission="TODO" />
     </application>
-
-    <!-- Required to query activities that can process text, see:
-         https://developer.android.com/training/package-visibility and
-         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
-
-         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.PROCESS_TEXT"/>
-            <data android:mimeType="text/plain"/>
-        </intent>
-    </queries>
 </manifest>

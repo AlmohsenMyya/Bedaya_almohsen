@@ -89,8 +89,7 @@ Future get(
 }) async {
   Uri urlToProcess =
       apiUrl(requestedUrl, queryParameters: queryParameters, context: context);
-  pr('http GET request: $urlToProcess', lineNumber: 2);
-  print(" --http GET request: $urlToProcess ++parameters ${_setHeaders()}");
+
   var httpResponse = await http
       .get(
     urlToProcess,
@@ -110,7 +109,6 @@ Future get(
         failedCallbackAction: onFailed);
     return error;
   });
-  print("get result --d-- ${httpResponse.statusCode} --- body ${httpResponse.body}");
   return httpResponse.body;
 }
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:progress_loading_button/progress_loading_button.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
@@ -159,47 +158,47 @@ class _LoginPageState extends State<LoginPage> {
                             text: context.lwTranslate.signInWithFacebook,
                             buttonType: SocialLoginButtonType.facebook,
                             onPressed: () async {
-                              final LoginResult fbLoginResult =
-                                  await FacebookAuth.instance.login();
-                              if (fbLoginResult.status == LoginStatus.success) {
-                                // you are logged
-                                final AccessToken accessToken =
-                                    fbLoginResult.accessToken!;
-                                setState(() {
-                                  isInProcess = true;
-                                });
-                                // ignore: use_build_context_synchronously
-                                await data_transport.post(
-                                  'user/social-login/response/via-facebook',
-                                  inputData: {
-                                    'access_token': accessToken.token
-                                  },
-                                  context: context,
-                                  onSuccess: (responseData) {
-                                    if (responseData != null) {
-                                      auth.createLoginSession(
-                                          responseData, context);
-                                    }
-                                  },
-                                  thenCallback: (responseData) {
-                                    setState(() {
-                                      isInProcess = false;
-                                    });
-                                  },
-                                );
-                              } else {
-                                setState(() {
-                                  isInProcess = false;
-                                });
-                                pr(fbLoginResult.message);
-                                // ignore: use_build_context_synchronously
-                                showToastMessage(
-                                  context,
-                                  // ignore: use_build_context_synchronously
-                                  context.lwTranslate.failedToInitialize,
-                                  type: 'error',
-                                );
-                              }
+                              // final LoginResult fbLoginResult =
+                              //     await FacebookAuth.instance.login();
+                              // if (fbLoginResult.status == LoginStatus.success) {
+                              //   // you are logged
+                              //   final AccessToken accessToken =
+                              //       fbLoginResult.accessToken!;
+                              //   setState(() {
+                              //     isInProcess = true;
+                              //   });
+                              //   // ignore: use_build_context_synchronously
+                              //   await data_transport.post(
+                              //     'user/social-login/response/via-facebook',
+                              //     inputData: {
+                              //       'access_token': accessToken.token
+                              //     },
+                              //     context: context,
+                              //     onSuccess: (responseData) {
+                              //       if (responseData != null) {
+                              //         auth.createLoginSession(
+                              //             responseData, context);
+                              //       }
+                              //     },
+                              //     thenCallback: (responseData) {
+                              //       setState(() {
+                              //         isInProcess = false;
+                              //       });
+                              //     },
+                              //   );
+                              // } else {
+                              //   setState(() {
+                              //     isInProcess = false;
+                              //   });
+                              //   pr(fbLoginResult.message);
+                              //   // ignore: use_build_context_synchronously
+                              //   showToastMessage(
+                              //     context,
+                              //     // ignore: use_build_context_synchronously
+                              //     context.lwTranslate.failedToInitialize,
+                              //     type: 'error',
+                              //   );
+                              // }
                             },
                             imageWidth: 20,
                           ),
